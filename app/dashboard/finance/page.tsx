@@ -24,7 +24,9 @@ import {
   Calendar,
   Package,
   Receipt,
-  Wallet
+  Wallet,
+  User,
+  Users
 } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { formatCurrency } from "@/lib/utils"
