@@ -1,0 +1,99 @@
+"use client"
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Plus, FileText, Folder, Upload, Download } from "lucide-react"
+
+export default function DocumentsPage() {
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Documents</h1>
+          <p className="text-gray-600 mt-1">Manage documents, versions, and approvals</p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline">
+            <Upload className="h-4 w-4 mr-2" />
+            Upload
+          </Button>
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            New Document
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-4">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Total Documents</p>
+                <p className="text-2xl font-bold mt-2">342</p>
+              </div>
+              <div className="bg-blue-500 text-white p-3 rounded-lg">
+                <FileText className="h-5 w-5" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Folders</p>
+                <p className="text-2xl font-bold mt-2">24</p>
+              </div>
+              <div className="bg-green-500 text-white p-3 rounded-lg">
+                <Folder className="h-5 w-5" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Pending Approval</p>
+                <p className="text-2xl font-bold mt-2">12</p>
+              </div>
+              <div className="bg-yellow-500 text-white p-3 rounded-lg">
+                <FileText className="h-5 w-5" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Storage Used</p>
+                <p className="text-2xl font-bold mt-2">24GB</p>
+              </div>
+              <div className="bg-purple-500 text-white p-3 rounded-lg">
+                <Download className="h-5 w-5" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Documents</CardTitle>
+          <CardDescription>Recently uploaded or modified documents</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8 text-gray-600">
+            No documents yet. Upload your first document to get started.
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
