@@ -34,6 +34,13 @@ export const translations = {
     recentProjects: "Recent Projects",
     recentInvoices: "Recent Invoices",
     recentTasks: "Recent Tasks",
+    latestUpdates: "Latest project updates",
+    financialActivity: "Latest financial activity",
+    taskUpdates: "Latest task updates",
+    actionNeeded: "Action needed",
+    allGood: "All good",
+    loading: "Loading...",
+    fromLastMonth: "from last month",
     
     // Projects
     projectsTitle: "Projects",
@@ -106,6 +113,13 @@ export const translations = {
     recentProjects: "المشاريع الأخيرة",
     recentInvoices: "الفواتير الأخيرة",
     recentTasks: "المهام الأخيرة",
+    latestUpdates: "آخر تحديثات المشاريع",
+    financialActivity: "آخر النشاطات المالية",
+    taskUpdates: "آخر تحديثات المهام",
+    actionNeeded: "يتطلب إجراء",
+    allGood: "كل شيء على ما يرام",
+    loading: "جاري التحميل...",
+    fromLastMonth: "من الشهر الماضي",
     
     // Projects - المشاريع
     projectsTitle: "المشاريع",

@@ -1,6 +1,6 @@
 "use client"
 
-import { Bell, Search, User } from "lucide-react"
+import { Bell, Search, Languages } from "lucide-react"
 import { signOut, useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,10 +13,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { getInitials } from "@/lib/utils"
+import { useLanguage } from "@/lib/language-context"
 
 export function Header() {
   const { data: session } = useSession()
+  const { lang, toggleLanguage, t } = useLanguage()
 
   const initials = session?.user?.name
     ? session.user.name.split(' ').map(n => n[0]).join('').toUpperCase()
@@ -30,13 +31,38 @@ export function Header() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
               type="search"
-              placeholder="Search..."
+              placeholder={t.search}
               className="pl-10 w-full"
             />
           </div>
         </div>
 
         <div className="flex items-center gap-4 ml-6">
+          {/* Language Switcher Button */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="relative">
+                <Languages className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem 
+                onClick={() => toggleLanguage()}
+                className={lang === 'en' ? 'bg-accent' : ''}
+              >
+                <span className="mr-2 text-xl">🇬🇧</span>
+                <span>English</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                onClick={() => toggleLanguage()}
+                className={lang === 'ar' ? 'bg-accent' : ''}
+              >
+                <span className="mr-2 text-xl">🇸🇦</span>
+                <span>العربية</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Button variant="ghost" size="icon" className="relative">
             <Bell className="h-5 w-5" />
             <span className="absolute top-0 right-0 h-2 w-2 bg-red-600 rounded-full" />
@@ -62,10 +88,10 @@ export function Header() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>{t.settings}</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/auth/signin" })}>
-                Log out
+                {t.signOut}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

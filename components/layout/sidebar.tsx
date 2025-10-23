@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/language-context"
 import {
   LayoutDashboard,
   FolderKanban,
@@ -18,23 +19,24 @@ import {
   Settings,
 } from "lucide-react"
 
-const menuItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-  { icon: FolderKanban, label: "Projects", href: "/dashboard/projects" },
-  { icon: DollarSign, label: "Finance", href: "/dashboard/finance" },
-  { icon: Users, label: "HR", href: "/dashboard/hr" },
-  { icon: ShoppingCart, label: "Procurement", href: "/dashboard/procurement" },
-  { icon: Package, label: "Inventory", href: "/dashboard/inventory" },
-  { icon: FileText, label: "Contracts", href: "/dashboard/contracts" },
-  { icon: UserCircle, label: "CRM", href: "/dashboard/crm" },
-  { icon: Wrench, label: "Equipment", href: "/dashboard/equipment" },
-  { icon: FolderOpen, label: "Documents", href: "/dashboard/documents" },
-  { icon: BarChart3, label: "Analytics", href: "/dashboard/analytics" },
-  { icon: Settings, label: "Settings", href: "/dashboard/settings" },
-]
-
 export function Sidebar() {
   const pathname = usePathname()
+  const { t } = useLanguage()
+
+  const menuItems = [
+    { icon: LayoutDashboard, label: t.dashboard, href: "/dashboard" },
+    { icon: FolderKanban, label: t.projects, href: "/dashboard/projects" },
+    { icon: DollarSign, label: t.finance, href: "/dashboard/finance" },
+    { icon: Users, label: t.hr, href: "/dashboard/hr" },
+    { icon: ShoppingCart, label: t.procurement, href: "/dashboard/procurement" },
+    { icon: Package, label: t.inventory, href: "/dashboard/inventory" },
+    { icon: FileText, label: t.contracts, href: "/dashboard/contracts" },
+    { icon: UserCircle, label: t.crm, href: "/dashboard/crm" },
+    { icon: Wrench, label: t.equipment, href: "/dashboard/equipment" },
+    { icon: FolderOpen, label: t.documents, href: "/dashboard/documents" },
+    { icon: BarChart3, label: t.analytics, href: "/dashboard/analytics" },
+    { icon: Settings, label: t.settings, href: "/dashboard/settings" },
+  ]
 
   return (
     <aside className="hidden md:flex flex-col w-64 bg-gray-900 text-white min-h-screen">

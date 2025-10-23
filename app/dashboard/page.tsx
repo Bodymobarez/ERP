@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useLanguage } from "@/lib/language-context"
 import { 
   BarChart3, 
   TrendingUp, 
@@ -16,6 +17,7 @@ import {
 export default function DashboardPage() {
   const [stats, setStats] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const { t } = useLanguage()
 
   useEffect(() => {
     fetch("/api/analytics/dashboard")
@@ -33,7 +35,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="text-lg text-gray-600">Loading dashboard...</div>
+        <div className="text-lg text-gray-600">{t.loading || "Loading dashboard..."}</div>
       </div>
     )
   }
@@ -41,14 +43,14 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-1">Welcome to your ERP system overview</p>
+        <h1 className="text-3xl font-bold text-gray-900">{t.dashboardTitle}</h1>
+        <p className="text-gray-600 mt-1">{t.dashboardOverview}</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          title="Active Projects"
+          title={t.activeProjects}
           value={stats?.projects?.byStatus?.find((s: any) => s.status === 'active')?._count || 0}
           icon={<FolderKanban className="h-5 w-5" />}
           trend="+12%"
@@ -56,7 +58,7 @@ export default function DashboardPage() {
           color="blue"
         />
         <StatCard
-          title="Total Revenue"
+          title={t.totalRevenue}
           value={`$${(stats?.finance?.received || 0).toLocaleString()}`}
           icon={<DollarSign className="h-5 w-5" />}
           trend="+8.2%"
@@ -64,7 +66,7 @@ export default function DashboardPage() {
           color="green"
         />
         <StatCard
-          title="Active Employees"
+          title={t.activeEmployees}
           value={stats?.hr?.activeEmployees || 0}
           icon={<Users className="h-5 w-5" />}
           trend="+3"
@@ -72,10 +74,10 @@ export default function DashboardPage() {
           color="purple"
         />
         <StatCard
-          title="Low Stock Items"
+          title={t.lowStockItems}
           value={stats?.inventory?.lowStockItems || 0}
           icon={<Package className="h-5 w-5" />}
-          trend={stats?.inventory?.lowStockItems > 0 ? "Action needed" : "All good"}
+          trend={stats?.inventory?.lowStockItems > 0 ? t.actionNeeded || "Action needed" : t.allGood || "All good"}
           trendUp={false}
           color="red"
         />
@@ -86,8 +88,8 @@ export default function DashboardPage() {
         {/* Recent Projects */}
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>Recent Projects</CardTitle>
-            <CardDescription>Latest project updates</CardDescription>
+            <CardTitle>{t.recentProjects}</CardTitle>
+            <CardDescription>{t.latestUpdates || "Latest project updates"}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -109,8 +111,8 @@ export default function DashboardPage() {
         {/* Recent Invoices */}
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>Recent Invoices</CardTitle>
-            <CardDescription>Latest financial activity</CardDescription>
+            <CardTitle>{t.recentInvoices}</CardTitle>
+            <CardDescription>{t.financialActivity || "Latest financial activity"}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -135,8 +137,8 @@ export default function DashboardPage() {
         {/* Recent Tasks */}
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>Recent Tasks</CardTitle>
-            <CardDescription>Latest task updates</CardDescription>
+            <CardTitle>{t.recentTasks}</CardTitle>
+            <CardDescription>{t.taskUpdates || "Latest task updates"}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
