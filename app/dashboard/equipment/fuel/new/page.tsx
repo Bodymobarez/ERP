@@ -24,7 +24,8 @@ import {
   Calculator,
   Hash,
   Gauge,
-  Building2
+  Building2,
+  Calendar as CalendarLucide
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -253,7 +254,7 @@ export default function NewFuelTransactionPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-green-600" />
+                <CalendarLucide className="h-5 w-5 text-green-600" />
                 التاريخ والوقت والموقع
               </CardTitle>
               <CardDescription>متى وأين تمت عملية التزود</CardDescription>
