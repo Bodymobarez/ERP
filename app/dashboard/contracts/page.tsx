@@ -6,7 +6,7 @@ import { Plus, FileText, CheckCircle2, Clock } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 
 export default function ContractsPage() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   
   return (
     <div className="space-y-6">

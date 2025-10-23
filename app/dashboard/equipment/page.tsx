@@ -6,7 +6,7 @@ import { Plus, Wrench, CheckCircle2, AlertCircle, Clock } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 
 export default function EquipmentPage() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   
   return (
     <div className="space-y-6">

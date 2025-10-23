@@ -6,7 +6,7 @@ import { Settings, User, Shield, Bell, Globe } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 
 export default function SettingsPage() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   
   return (
     <div className="space-y-6">
@@ -24,13 +24,13 @@ export default function SettingsPage() {
               </div>
               <div>
                 <CardTitle>{t.profileSettings}</CardTitle>
-                <CardDescription>{t.lang === 'ar' ? 'إدارة تفاصيل حسابك' : 'Manage your account details'}</CardDescription>
+                <CardDescription>{lang === 'ar' ? 'إدارة تفاصيل حسابك' : 'Manage your account details'}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600">
-              {t.lang === 'ar' ? 'تحديث معلوماتك الشخصية وصورة الملف الشخصي وتفاصيل الاتصال.' : 'Update your personal information, profile picture, and contact details.'}
+              {lang === 'ar' ? 'تحديث معلوماتك الشخصية وصورة الملف الشخصي وتفاصيل الاتصال.' : 'Update your personal information, profile picture, and contact details.'}
             </p>
           </CardContent>
         </Card>
@@ -43,13 +43,13 @@ export default function SettingsPage() {
               </div>
               <div>
                 <CardTitle>{t.security}</CardTitle>
-                <CardDescription>{t.lang === 'ar' ? 'كلمة المرور والمصادقة' : 'Password and authentication'}</CardDescription>
+                <CardDescription>{lang === 'ar' ? 'كلمة المرور والمصادقة' : 'Password and authentication'}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600">
-              {t.lang === 'ar' ? 'تغيير كلمة المرور وتفعيل المصادقة الثنائية وإدارة الجلسات.' : 'Change your password, enable two-factor authentication, and manage sessions.'}
+              {lang === 'ar' ? 'تغيير كلمة المرور وتفعيل المصادقة الثنائية وإدارة الجلسات.' : 'Change your password, enable two-factor authentication, and manage sessions.'}
             </p>
           </CardContent>
         </Card>
@@ -62,13 +62,13 @@ export default function SettingsPage() {
               </div>
               <div>
                 <CardTitle>{t.notifications}</CardTitle>
-                <CardDescription>{t.lang === 'ar' ? 'إعدادات تفضيلات الإشعارات' : 'Configure notification preferences'}</CardDescription>
+                <CardDescription>{lang === 'ar' ? 'إعدادات تفضيلات الإشعارات' : 'Configure notification preferences'}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600">
-              {t.lang === 'ar' ? 'اختر الإشعارات التي تريد استلامها وكيفية استلامها.' : 'Choose which notifications you want to receive and how you want to receive them.'}
+              {lang === 'ar' ? 'اختر الإشعارات التي تريد استلامها وكيفية استلامها.' : 'Choose which notifications you want to receive and how you want to receive them.'}
             </p>
           </CardContent>
         </Card>
@@ -81,13 +81,13 @@ export default function SettingsPage() {
               </div>
               <div>
                 <CardTitle>{t.companySettings}</CardTitle>
-                <CardDescription>{t.lang === 'ar' ? 'إدارة معلومات الشركة' : 'Manage company information'}</CardDescription>
+                <CardDescription>{lang === 'ar' ? 'إدارة معلومات الشركة' : 'Manage company information'}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600">
-              {t.lang === 'ar' ? 'تحديث تفاصيل الشركة والفروع والإعدادات على مستوى النظام.' : 'Update company details, branches, and system-wide preferences.'}
+              {lang === 'ar' ? 'تحديث تفاصيل الشركة والفروع والإعدادات على مستوى النظام.' : 'Update company details, branches, and system-wide preferences.'}
             </p>
           </CardContent>
         </Card>
@@ -100,13 +100,13 @@ export default function SettingsPage() {
               </div>
               <div>
                 <CardTitle>{t.systemSettings}</CardTitle>
-                <CardDescription>{t.lang === 'ar' ? 'إعدادات النظام' : 'Configure system options'}</CardDescription>
+                <CardDescription>{lang === 'ar' ? 'إعدادات النظام' : 'Configure system options'}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600">
-              {t.lang === 'ar' ? 'إدارة الأدوار والصلاحيات والتكاملات والإعدادات المتقدمة للنظام.' : 'Manage roles, permissions, integrations, and advanced system settings.'}
+              {lang === 'ar' ? 'إدارة الأدوار والصلاحيات والتكاملات والإعدادات المتقدمة للنظام.' : 'Manage roles, permissions, integrations, and advanced system settings.'}
             </p>
           </CardContent>
         </Card>

@@ -6,7 +6,7 @@ import { Plus, ShoppingCart, FileText, Package } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 
 export default function ProcurementPage() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   
   return (
     <div className="space-y-6">

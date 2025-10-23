@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Plus, Calendar, DollarSign, TrendingUp } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
+import Link from "next/link"
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<any[]>([])
@@ -31,10 +32,12 @@ export default function ProjectsPage() {
           <h1 className="text-3xl font-bold text-gray-900">{t.projectsTitle}</h1>
           <p className="text-gray-600 mt-1">{t.projectsDesc}</p>
         </div>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          {t.newProject}
-        </Button>
+        <Link href="/dashboard/projects/new">
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            {t.newProject}
+          </Button>
+        </Link>
       </div>
 
       {loading ? (

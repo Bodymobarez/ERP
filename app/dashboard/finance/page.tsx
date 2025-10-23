@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Plus, TrendingUp, TrendingDown, DollarSign, FileText } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
 import { useLanguage } from "@/lib/language-context"
+import Link from "next/link"
 
 export default function FinancePage() {
   const [invoices, setInvoices] = useState<any[]>([])
@@ -39,10 +40,12 @@ export default function FinancePage() {
           <h1 className="text-3xl font-bold text-gray-900">{t.financeTitle}</h1>
           <p className="text-gray-600 mt-1">{t.financeDesc}</p>
         </div>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          {t.newInvoice}
-        </Button>
+        <Link href="/dashboard/finance/new">
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            {t.newInvoice}
+          </Button>
+        </Link>
       </div>
 
       {/* Stats Cards */}

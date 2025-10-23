@@ -175,7 +175,6 @@ export const translations = {
     outstanding: "Outstanding",
     totalInvoices: "Total Invoices",
     paidInvoices: "Paid Invoices",
-    recentInvoices: "Recent Invoices",
     manageInvoices: "Manage and track all your invoices",
     clientSupplier: "Client/Supplier",
     balance: "Balance",
@@ -207,7 +206,6 @@ export const translations = {
     salary: "Salary",
     hireDate: "Hire Date",
     totalEmployees: "Total Employees",
-    activeEmployees: "Active",
     onLeave: "On Leave",
     terminated: "Terminated",
     growthRate: "Growth Rate",
@@ -278,7 +276,6 @@ export const translations = {
     expired: "Expired",
     contractTerms: "Contract Terms",
     amendments: "Amendments",
-    startDate: "Start Date",
     expiryDate: "Expiry Date",
     
     // ========== CRM / علاقات العملاء ==========
@@ -690,7 +687,6 @@ export const translations = {
     outstanding: "المبالغ المستحقة",
     totalInvoices: "إجمالي الفواتير",
     paidInvoices: "الفواتير المدفوعة",
-    recentInvoices: "الفواتير الأخيرة",
     manageInvoices: "إدارة وتتبع جميع فواتيرك",
     clientSupplier: "العميل/المورد",
     balance: "الرصيد",
@@ -722,7 +718,6 @@ export const translations = {
     salary: "الراتب",
     hireDate: "تاريخ التوظيف",
     totalEmployees: "إجمالي الموظفين",
-    activeEmployees: "نشط",
     onLeave: "في إجازة",
     terminated: "منتهي الخدمة",
     growthRate: "معدل النمو",
@@ -793,7 +788,6 @@ export const translations = {
     expired: "منتهية",
     contractTerms: "شروط العقد",
     amendments: "التعديلات",
-    startDate: "تاريخ البدء",
     expiryDate: "تاريخ الانتهاء",
     
     // ========== CRM / علاقات العملاء ==========

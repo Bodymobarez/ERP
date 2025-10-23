@@ -5,7 +5,7 @@ import { BarChart3, TrendingUp, DollarSign, Users, Package, FileText } from "luc
 import { useLanguage } from "@/lib/language-context"
 
 export default function AnalyticsPage() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   
   return (
     <div className="space-y-6">

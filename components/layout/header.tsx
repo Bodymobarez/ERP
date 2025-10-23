@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useLanguage } from "@/lib/language-context"
+import { NotificationsPanel } from "@/components/notifications-panel"
 
 export function Header() {
   const { data: session } = useSession()
@@ -24,7 +25,7 @@ export function Header() {
     : 'U'
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
+    <header className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex-1 max-w-2xl">
           <div className="relative">
@@ -32,7 +33,7 @@ export function Header() {
             <Input
               type="search"
               placeholder={t.search}
-              className="pl-10 w-full"
+              className="pl-10 w-full bg-white/20 border-white/30 text-white placeholder:text-white/70"
             />
           </div>
         </div>
@@ -41,19 +42,19 @@ export function Header() {
           {/* Language Switcher Button */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/20">
                 <Languages className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 onClick={() => toggleLanguage()}
                 className={lang === 'en' ? 'bg-accent' : ''}
               >
                 <span className="mr-2 text-xl">🇬🇧</span>
                 <span>English</span>
               </DropdownMenuItem>
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 onClick={() => toggleLanguage()}
                 className={lang === 'ar' ? 'bg-accent' : ''}
               >
@@ -63,17 +64,14 @@ export function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-5 w-5" />
-            <span className="absolute top-0 right-0 h-2 w-2 bg-red-600 rounded-full" />
-          </Button>
+          <NotificationsPanel />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+              <Button variant="ghost" className="relative h-10 w-10 rounded-full text-white hover:bg-white/20">
                 <Avatar>
                   <AvatarImage src={session?.user?.image || undefined} alt={session?.user?.name || "User"} />
-                  <AvatarFallback>{initials}</AvatarFallback>
+                  <AvatarFallback className="bg-white/20 text-white">{initials}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -87,7 +85,7 @@ export function Header() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>{t.profile}</DropdownMenuItem>
               <DropdownMenuItem>{t.settings}</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/auth/signin" })}>

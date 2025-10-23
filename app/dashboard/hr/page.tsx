@@ -7,6 +7,7 @@ import { Plus, Users, UserCheck, UserX, TrendingUp } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getInitials } from "@/lib/utils"
 import { useLanguage } from "@/lib/language-context"
+import Link from "next/link"
 
 export default function HRPage() {
   const [employees, setEmployees] = useState<any[]>([])
@@ -40,10 +41,12 @@ export default function HRPage() {
           <h1 className="text-3xl font-bold text-gray-900">{t.hrTitle}</h1>
           <p className="text-gray-600 mt-1">{t.hrDesc}</p>
         </div>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          {t.newEmployee}
-        </Button>
+        <Link href="/dashboard/hr/new">
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            {t.newEmployee}
+          </Button>
+        </Link>
       </div>
 
       {/* Stats Cards */}

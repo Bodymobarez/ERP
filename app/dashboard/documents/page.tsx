@@ -6,7 +6,7 @@ import { Plus, FileText, Folder, Upload, Download } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 
 export default function DocumentsPage() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   
   return (
     <div className="space-y-6">
