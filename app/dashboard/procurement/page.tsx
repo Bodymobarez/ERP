@@ -25,7 +25,8 @@ import {
   Calendar,
   Building2,
   Truck,
-  User
+  User,
+  MapPin
 } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { formatCurrency } from "@/lib/utils"
