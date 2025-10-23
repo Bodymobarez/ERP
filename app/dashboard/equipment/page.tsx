@@ -406,12 +406,12 @@ export default function EquipmentPage() {
                   <div className="flex items-center gap-2 text-sm">
                     <Calendar className="h-4 w-4 text-purple-500" />
                     <span className="text-gray-600">آخر صيانة:</span>
-                    <span className="font-medium">{new Date(equipment.maintenanceDate).toLocaleDateString('ar-SA')}</span>
+                    <span className="font-medium">{equipment.maintenanceDate}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <AlertTriangle className="h-4 w-4 text-red-500" />
                     <span className="text-gray-600">الصيانة القادمة:</span>
-                    <span className="font-medium">{new Date(equipment.nextMaintenance).toLocaleDateString('ar-SA')}</span>
+                    <span className="font-medium">{equipment.nextMaintenance}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <DollarSign className="h-4 w-4 text-green-500" />
