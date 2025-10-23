@@ -15,15 +15,12 @@ export function formatCurrency(amount: number, currency: string = 'USD'): string
 export function formatDate(date: Date | string, format: 'short' | 'long' = 'short'): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date
   
-  if (format === 'long') {
-    return dateObj.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  }
+  // Return YYYY-MM-DD to avoid hydration mismatch
+  const year = dateObj.getFullYear()
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0')
+  const day = String(dateObj.getDate()).padStart(2, '0')
   
-  return dateObj.toLocaleDateString('en-US')
+  return `${year}-${month}-${day}`
 }
 
 export function generateCode(prefix: string, length: number = 6): string {

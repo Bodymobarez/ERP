@@ -289,7 +289,7 @@ export default function SitesPage() {
                     <Calendar className="h-4 w-4 text-green-500" />
                     <div>
                       <p className="text-xs text-gray-500">تاريخ البدء</p>
-                      <p className="font-medium">{new Date(site.startDate).toLocaleDateString('ar-SA')}</p>
+                      <p className="font-medium">{site.startDate}</p>
                     </div>
                   </div>
                 </div>
