@@ -58,3 +58,36 @@
   }
 }
 
+/* RTL Support for Arabic */
+[dir="rtl"] {
+  direction: rtl;
+}
+
+[dir="rtl"] .sidebar {
+  right: 0;
+  left: auto;
+}
+
+[dir="rtl"] .ml-auto {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+/* Arabic Font */
+.font-arabic {
+  font-family: var(--font-cairo), var(--font-inter), sans-serif;
+}
+
