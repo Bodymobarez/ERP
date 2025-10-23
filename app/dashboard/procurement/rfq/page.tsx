@@ -23,7 +23,8 @@ import {
   DollarSign,
   Calendar,
   Users,
-  TrendingUp
+  TrendingUp,
+  ShoppingCart
 } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { formatCurrency } from "@/lib/utils"
