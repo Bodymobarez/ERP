@@ -87,12 +87,12 @@ export default function DocumentsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Documents</CardTitle>
-          <CardDescription>Recently uploaded or modified documents</CardDescription>
+          <CardTitle>{t.recentDocuments}</CardTitle>
+          <CardDescription>{lang === 'ar' ? 'المستندات المرفوعة أو المعدلة مؤخراً' : 'Recently uploaded or modified documents'}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-gray-600">
-            No documents yet. Upload your first document to get started.
+            {lang === 'ar' ? 'لا توجد مستندات بعد. ارفع مستندك الأول للبدء.' : 'No documents yet. Upload your first document to get started.'}
           </div>
         </CardContent>
       </Card>

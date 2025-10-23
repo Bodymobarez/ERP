@@ -118,12 +118,12 @@ export default function FinancePage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Invoice #</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Client/Supplier</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Date</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Amount</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Status</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Balance</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.invoiceNumber}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.clientSupplier}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.date}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.amount}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.status}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.balance}</th>
                   </tr>
                 </thead>
                 <tbody>

@@ -102,13 +102,13 @@ export default function InventoryPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">SKU</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Name</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Category</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Unit Price</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Current Stock</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Min Stock</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Status</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.sku}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.name}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.category}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.unitPrice}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.currentStock}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.minStock}</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-700">{t.status}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -131,11 +131,11 @@ export default function InventoryPage() {
                         <td className="py-3 px-4">
                           {isLowStock ? (
                             <span className="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium">
-                              Low Stock
+                              {t.lowStock}
                             </span>
                           ) : (
                             <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                              In Stock
+                              {t.inStock}
                             </span>
                           )}
                         </td>

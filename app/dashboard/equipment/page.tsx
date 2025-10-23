@@ -81,12 +81,12 @@ export default function EquipmentPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Equipment List</CardTitle>
-          <CardDescription>All equipment in the system</CardDescription>
+          <CardTitle>{t.equipmentList}</CardTitle>
+          <CardDescription>{lang === 'ar' ? 'جميع المعدات في النظام' : 'All equipment in the system'}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-gray-600">
-            No equipment yet. Add your first equipment to get started.
+            {lang === 'ar' ? 'لا توجد معدات بعد. أضف معداتك الأولى للبدء.' : 'No equipment yet. Add your first equipment to get started.'}
           </div>
         </CardContent>
       </Card>

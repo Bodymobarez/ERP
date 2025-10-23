@@ -67,12 +67,12 @@ export default function ProcurementPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Purchase Requests</CardTitle>
-          <CardDescription>Latest procurement activity</CardDescription>
+          <CardTitle>{lang === 'ar' ? 'طلبات الشراء الأخيرة' : 'Recent Purchase Requests'}</CardTitle>
+          <CardDescription>{lang === 'ar' ? 'آخر نشاطات المشتريات' : 'Latest procurement activity'}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-gray-600">
-            No purchase requests yet. Create your first request to get started.
+            {lang === 'ar' ? 'لا توجد طلبات شراء بعد. أنشئ طلبك الأول للبدء.' : 'No purchase requests yet. Create your first request to get started.'}
           </div>
         </CardContent>
       </Card>

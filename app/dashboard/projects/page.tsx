@@ -60,11 +60,11 @@ export default function ProjectsPage() {
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
                     <DollarSign className="h-4 w-4 mr-2" />
-                    Budget: ${project.budget.toLocaleString()}
+                    {t.budget}: ${project.budget.toLocaleString()}
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600">Progress</span>
+                      <span className="text-gray-600">{t.progress}</span>
                       <span className="font-medium">{project.progress}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">

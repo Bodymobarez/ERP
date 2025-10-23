@@ -67,12 +67,12 @@ export default function ContractsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Contracts</CardTitle>
-          <CardDescription>Latest contract activity</CardDescription>
+          <CardTitle>{lang === 'ar' ? 'العقود الأخيرة' : 'Recent Contracts'}</CardTitle>
+          <CardDescription>{lang === 'ar' ? 'آخر نشاطات العقود' : 'Latest contract activity'}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-gray-600">
-            No contracts yet. Create your first contract to get started.
+            {lang === 'ar' ? 'لا توجد عقود بعد. أنشئ عقدك الأول للبدء.' : 'No contracts yet. Create your first contract to get started.'}
           </div>
         </CardContent>
       </Card>

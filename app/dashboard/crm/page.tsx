@@ -81,12 +81,12 @@ export default function CRMPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Opportunities</CardTitle>
-          <CardDescription>Latest sales opportunities</CardDescription>
+          <CardTitle>{lang === 'ar' ? 'الفرص الأخيرة' : 'Recent Opportunities'}</CardTitle>
+          <CardDescription>{lang === 'ar' ? 'آخر الفرص البيعية' : 'Latest sales opportunities'}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-gray-600">
-            No opportunities yet. Create your first opportunity to get started.
+            {lang === 'ar' ? 'لا توجد فرص بعد. أنشئ فرصتك الأولى للبدء.' : 'No opportunities yet. Create your first opportunity to get started.'}
           </div>
         </CardContent>
       </Card>
