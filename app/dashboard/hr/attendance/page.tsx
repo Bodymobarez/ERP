@@ -265,7 +265,7 @@ export default function AttendancePage() {
                   <tr key={record.id} className="border-b hover:bg-gray-50">
                     <td className="p-4 font-mono text-sm">{record.employeeId}</td>
                     <td className="p-4 font-medium">{record.employee}</td>
-                    <td className="p-4">{new Date(record.date).toLocaleDateString('ar-SA')}</td>
+                    <td className="p-4">{record.date}</td>
                     <td className="p-4">{record.checkIn}</td>
                     <td className="p-4">{record.checkOut}</td>
                     <td className="p-4 font-medium">{record.workHours}</td>
