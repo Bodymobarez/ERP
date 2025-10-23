@@ -5,10 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Plus, TrendingUp, TrendingDown, DollarSign, FileText } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
+import { useLanguage } from "@/lib/language-context"
 
 export default function FinancePage() {
   const [invoices, setInvoices] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const { t } = useLanguage()
 
   useEffect(() => {
     fetch("/api/invoices")
@@ -34,12 +36,12 @@ export default function FinancePage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Finance</h1>
-          <p className="text-gray-600 mt-1">Manage invoices, payments, and accounts</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t.financeTitle}</h1>
+          <p className="text-gray-600 mt-1">{t.financeDesc}</p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          New Invoice
+          {t.newInvoice}
         </Button>
       </div>
 
@@ -49,7 +51,7 @@ export default function FinancePage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Revenue</p>
+                <p className="text-sm text-gray-600">{t.totalRevenue}</p>
                 <p className="text-2xl font-bold mt-2">{formatCurrency(stats.totalRevenue)}</p>
               </div>
               <div className="bg-green-500 text-white p-3 rounded-lg">
@@ -63,7 +65,7 @@ export default function FinancePage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Outstanding</p>
+                <p className="text-sm text-gray-600">{t.outstanding}</p>
                 <p className="text-2xl font-bold mt-2">{formatCurrency(stats.outstanding)}</p>
               </div>
               <div className="bg-orange-500 text-white p-3 rounded-lg">
@@ -77,7 +79,7 @@ export default function FinancePage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Invoices</p>
+                <p className="text-sm text-gray-600">{t.totalInvoices}</p>
                 <p className="text-2xl font-bold mt-2">{stats.invoiceCount}</p>
               </div>
               <div className="bg-blue-500 text-white p-3 rounded-lg">
@@ -91,7 +93,7 @@ export default function FinancePage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Paid Invoices</p>
+                <p className="text-sm text-gray-600">{t.paidInvoices}</p>
                 <p className="text-2xl font-bold mt-2">{stats.paidCount}</p>
               </div>
               <div className="bg-purple-500 text-white p-3 rounded-lg">
@@ -105,12 +107,12 @@ export default function FinancePage() {
       {/* Invoices Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Invoices</CardTitle>
-          <CardDescription>Manage and track all your invoices</CardDescription>
+          <CardTitle>{t.recentInvoices}</CardTitle>
+          <CardDescription>{t.manageInvoices || "Manage and track all your invoices"}</CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="text-center py-8">Loading invoices...</div>
+            <div className="text-center py-8">{t.loading}</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">

@@ -3,18 +3,21 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Plus, Users, TrendingUp, Target, DollarSign } from "lucide-react"
+import { useLanguage } from "@/lib/language-context"
 
 export default function CRMPage() {
+  const { t } = useLanguage()
+  
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">CRM</h1>
-          <p className="text-gray-600 mt-1">Manage clients, leads, and opportunities</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t.crmTitle}</h1>
+          <p className="text-gray-600 mt-1">{t.crmDesc}</p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          New Lead
+          {t.newLead}
         </Button>
       </div>
 
@@ -23,7 +26,7 @@ export default function CRMPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Clients</p>
+                <p className="text-sm text-gray-600">{t.totalClients}</p>
                 <p className="text-2xl font-bold mt-2">156</p>
               </div>
               <div className="bg-blue-500 text-white p-3 rounded-lg">
@@ -37,7 +40,7 @@ export default function CRMPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Active Leads</p>
+                <p className="text-sm text-gray-600">{t.activeLeads}</p>
                 <p className="text-2xl font-bold mt-2">42</p>
               </div>
               <div className="bg-green-500 text-white p-3 rounded-lg">
@@ -51,7 +54,7 @@ export default function CRMPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Opportunities</p>
+                <p className="text-sm text-gray-600">{t.opportunities}</p>
                 <p className="text-2xl font-bold mt-2">28</p>
               </div>
               <div className="bg-purple-500 text-white p-3 rounded-lg">
@@ -65,7 +68,7 @@ export default function CRMPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Pipeline Value</p>
+                <p className="text-sm text-gray-600">{t.pipelineValue}</p>
                 <p className="text-2xl font-bold mt-2">$890K</p>
               </div>
               <div className="bg-orange-500 text-white p-3 rounded-lg">

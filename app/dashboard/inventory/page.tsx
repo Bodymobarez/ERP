@@ -4,10 +4,12 @@ import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Plus, Package, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react"
+import { useLanguage } from "@/lib/language-context"
 
 export default function InventoryPage() {
   const [items, setItems] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const { t } = useLanguage()
 
   useEffect(() => {
     fetch("/api/inventory/items")
@@ -32,12 +34,12 @@ export default function InventoryPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Inventory</h1>
-          <p className="text-gray-600 mt-1">Manage items, warehouses, and stock movements</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t.inventoryTitle}</h1>
+          <p className="text-gray-600 mt-1">{t.inventoryDesc}</p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          Add Item
+          {t.addItem}
         </Button>
       </div>
 
@@ -47,7 +49,7 @@ export default function InventoryPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Items</p>
+                <p className="text-sm text-gray-600">{t.totalItems}</p>
                 <p className="text-2xl font-bold mt-2">{stats.total}</p>
               </div>
               <div className="bg-blue-500 text-white p-3 rounded-lg">
@@ -61,7 +63,7 @@ export default function InventoryPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Low Stock Items</p>
+                <p className="text-sm text-gray-600">{t.lowStock || t.lowStockItems}</p>
                 <p className="text-2xl font-bold mt-2">{stats.lowStock}</p>
               </div>
               <div className="bg-red-500 text-white p-3 rounded-lg">
@@ -75,7 +77,7 @@ export default function InventoryPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Value</p>
+                <p className="text-sm text-gray-600">{t.totalValue}</p>
                 <p className="text-2xl font-bold mt-2">${stats.totalValue.toLocaleString()}</p>
               </div>
               <div className="bg-green-500 text-white p-3 rounded-lg">
@@ -89,12 +91,12 @@ export default function InventoryPage() {
       {/* Items Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Inventory Items</CardTitle>
-          <CardDescription>All items in your inventory</CardDescription>
+          <CardTitle>{t.items || "Inventory Items"}</CardTitle>
+          <CardDescription>{t.allItems}</CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="text-center py-8">Loading inventory...</div>
+            <div className="text-center py-8">{t.loading}</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">

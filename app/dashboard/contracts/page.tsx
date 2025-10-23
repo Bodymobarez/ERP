@@ -3,18 +3,21 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Plus, FileText, CheckCircle2, Clock } from "lucide-react"
+import { useLanguage } from "@/lib/language-context"
 
 export default function ContractsPage() {
+  const { t } = useLanguage()
+  
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Contracts</h1>
-          <p className="text-gray-600 mt-1">Manage contracts, terms, and amendments</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t.contractsTitle}</h1>
+          <p className="text-gray-600 mt-1">{t.contractsDesc}</p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          New Contract
+          {t.newContract}
         </Button>
       </div>
 
@@ -23,7 +26,7 @@ export default function ContractsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Active Contracts</p>
+                <p className="text-sm text-gray-600">{t.activeContracts}</p>
                 <p className="text-2xl font-bold mt-2">28</p>
               </div>
               <div className="bg-green-500 text-white p-3 rounded-lg">
@@ -37,7 +40,7 @@ export default function ContractsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Expiring Soon</p>
+                <p className="text-sm text-gray-600">{t.expiringSoon}</p>
                 <p className="text-2xl font-bold mt-2">5</p>
               </div>
               <div className="bg-yellow-500 text-white p-3 rounded-lg">
@@ -51,7 +54,7 @@ export default function ContractsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Value</p>
+                <p className="text-sm text-gray-600">{t.contractValue}</p>
                 <p className="text-2xl font-bold mt-2">$5.2M</p>
               </div>
               <div className="bg-blue-500 text-white p-3 rounded-lg">

@@ -4,10 +4,12 @@ import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Plus, Calendar, DollarSign, TrendingUp } from "lucide-react"
+import { useLanguage } from "@/lib/language-context"
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const { t } = useLanguage()
 
   useEffect(() => {
     fetch("/api/projects")
@@ -26,17 +28,17 @@ export default function ProjectsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
-          <p className="text-gray-600 mt-1">Manage and track all your projects</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t.projectsTitle}</h1>
+          <p className="text-gray-600 mt-1">{t.projectsDesc}</p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          New Project
+          {t.newProject}
         </Button>
       </div>
 
       {loading ? (
-        <div className="text-center py-12">Loading projects...</div>
+        <div className="text-center py-12">{t.loading}</div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
@@ -88,11 +90,11 @@ export default function ProjectsPage() {
       {!loading && projects.length === 0 && (
         <Card className="p-12">
           <div className="text-center">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No projects yet</h3>
-            <p className="text-gray-600 mb-4">Get started by creating your first project</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{t.noProjects || "No projects yet"}</h3>
+            <p className="text-gray-600 mb-4">{t.getStarted}</p>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Create Project
+              {t.createProject || t.newProject}
             </Button>
           </div>
         </Card>

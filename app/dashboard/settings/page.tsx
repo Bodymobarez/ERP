@@ -3,13 +3,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Settings, User, Shield, Bell, Globe } from "lucide-react"
+import { useLanguage } from "@/lib/language-context"
 
 export default function SettingsPage() {
+  const { t } = useLanguage()
+  
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-600 mt-1">Manage system settings and preferences</p>
+        <h1 className="text-3xl font-bold text-gray-900">{t.settingsTitle}</h1>
+        <p className="text-gray-600 mt-1">{t.settingsDesc}</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -20,14 +23,14 @@ export default function SettingsPage() {
                 <User className="h-6 w-6" />
               </div>
               <div>
-                <CardTitle>Profile Settings</CardTitle>
-                <CardDescription>Manage your account details</CardDescription>
+                <CardTitle>{t.profileSettings}</CardTitle>
+                <CardDescription>{t.lang === 'ar' ? 'إدارة تفاصيل حسابك' : 'Manage your account details'}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600">
-              Update your personal information, profile picture, and contact details.
+              {t.lang === 'ar' ? 'تحديث معلوماتك الشخصية وصورة الملف الشخصي وتفاصيل الاتصال.' : 'Update your personal information, profile picture, and contact details.'}
             </p>
           </CardContent>
         </Card>
@@ -39,14 +42,14 @@ export default function SettingsPage() {
                 <Shield className="h-6 w-6" />
               </div>
               <div>
-                <CardTitle>Security</CardTitle>
-                <CardDescription>Password and authentication</CardDescription>
+                <CardTitle>{t.security}</CardTitle>
+                <CardDescription>{t.lang === 'ar' ? 'كلمة المرور والمصادقة' : 'Password and authentication'}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600">
-              Change your password, enable two-factor authentication, and manage sessions.
+              {t.lang === 'ar' ? 'تغيير كلمة المرور وتفعيل المصادقة الثنائية وإدارة الجلسات.' : 'Change your password, enable two-factor authentication, and manage sessions.'}
             </p>
           </CardContent>
         </Card>
@@ -58,14 +61,14 @@ export default function SettingsPage() {
                 <Bell className="h-6 w-6" />
               </div>
               <div>
-                <CardTitle>Notifications</CardTitle>
-                <CardDescription>Configure notification preferences</CardDescription>
+                <CardTitle>{t.notifications}</CardTitle>
+                <CardDescription>{t.lang === 'ar' ? 'إعدادات تفضيلات الإشعارات' : 'Configure notification preferences'}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600">
-              Choose which notifications you want to receive and how you want to receive them.
+              {t.lang === 'ar' ? 'اختر الإشعارات التي تريد استلامها وكيفية استلامها.' : 'Choose which notifications you want to receive and how you want to receive them.'}
             </p>
           </CardContent>
         </Card>
@@ -77,14 +80,14 @@ export default function SettingsPage() {
                 <Globe className="h-6 w-6" />
               </div>
               <div>
-                <CardTitle>Company Settings</CardTitle>
-                <CardDescription>Manage company information</CardDescription>
+                <CardTitle>{t.companySettings}</CardTitle>
+                <CardDescription>{t.lang === 'ar' ? 'إدارة معلومات الشركة' : 'Manage company information'}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600">
-              Update company details, branches, and system-wide preferences.
+              {t.lang === 'ar' ? 'تحديث تفاصيل الشركة والفروع والإعدادات على مستوى النظام.' : 'Update company details, branches, and system-wide preferences.'}
             </p>
           </CardContent>
         </Card>
@@ -96,14 +99,14 @@ export default function SettingsPage() {
                 <Settings className="h-6 w-6" />
               </div>
               <div>
-                <CardTitle>System Settings</CardTitle>
-                <CardDescription>Configure system options</CardDescription>
+                <CardTitle>{t.systemSettings}</CardTitle>
+                <CardDescription>{t.lang === 'ar' ? 'إعدادات النظام' : 'Configure system options'}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600">
-              Manage roles, permissions, integrations, and advanced system settings.
+              {t.lang === 'ar' ? 'إدارة الأدوار والصلاحيات والتكاملات والإعدادات المتقدمة للنظام.' : 'Manage roles, permissions, integrations, and advanced system settings.'}
             </p>
           </CardContent>
         </Card>

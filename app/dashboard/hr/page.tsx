@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Plus, Users, UserCheck, UserX, TrendingUp } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getInitials } from "@/lib/utils"
+import { useLanguage } from "@/lib/language-context"
 
 export default function HRPage() {
   const [employees, setEmployees] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const { t } = useLanguage()
 
   useEffect(() => {
     fetch("/api/employees")
@@ -35,12 +37,12 @@ export default function HRPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Human Resources</h1>
-          <p className="text-gray-600 mt-1">Manage employees, attendance, and payroll</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t.hrTitle}</h1>
+          <p className="text-gray-600 mt-1">{t.hrDesc}</p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          New Employee
+          {t.newEmployee}
         </Button>
       </div>
 
@@ -50,7 +52,7 @@ export default function HRPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Employees</p>
+                <p className="text-sm text-gray-600">{t.totalEmployees}</p>
                 <p className="text-2xl font-bold mt-2">{stats.total}</p>
               </div>
               <div className="bg-blue-500 text-white p-3 rounded-lg">
@@ -64,7 +66,7 @@ export default function HRPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Active</p>
+                <p className="text-sm text-gray-600">{t.active}</p>
                 <p className="text-2xl font-bold mt-2">{stats.active}</p>
               </div>
               <div className="bg-green-500 text-white p-3 rounded-lg">
@@ -78,7 +80,7 @@ export default function HRPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">On Leave</p>
+                <p className="text-sm text-gray-600">{t.onLeave || "On Leave"}</p>
                 <p className="text-2xl font-bold mt-2">{stats.onLeave}</p>
               </div>
               <div className="bg-yellow-500 text-white p-3 rounded-lg">
@@ -92,7 +94,7 @@ export default function HRPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Growth Rate</p>
+                <p className="text-sm text-gray-600">{t.growthRate || "Growth Rate"}</p>
                 <p className="text-2xl font-bold mt-2">+8%</p>
               </div>
               <div className="bg-purple-500 text-white p-3 rounded-lg">
@@ -106,12 +108,12 @@ export default function HRPage() {
       {/* Employees Grid */}
       <Card>
         <CardHeader>
-          <CardTitle>Employees Directory</CardTitle>
-          <CardDescription>View and manage all employees</CardDescription>
+          <CardTitle>{t.directory || "Employees Directory"}</CardTitle>
+          <CardDescription>{t.viewManage}</CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="text-center py-8">Loading employees...</div>
+            <div className="text-center py-8">{t.loading}</div>
           ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {employees.slice(0, 12).map((employee) => (
