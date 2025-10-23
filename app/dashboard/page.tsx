@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Plus, Calendar, DollarSign, Users, Package, FolderKanban, TrendingUp, TrendingDown, CheckCircle2, XCircle, Clock, AlertTriangle, ShoppingCart, FileText, UserCircle, Wrench, FolderOpen, BarChart3, Settings, LayoutDashboard } from "lucide-react"
+import { Plus, Calendar, DollarSign, Calculator, Users, Package, FolderKanban, TrendingUp, TrendingDown, CheckCircle2, XCircle, Clock, AlertTriangle, ShoppingCart, FileText, UserCircle, Wrench, FolderOpen, BarChart3, Settings, LayoutDashboard } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, Legend } from 'recharts';
 import { formatCurrency } from "@/lib/utils"
@@ -113,6 +113,13 @@ export default function DashboardPage() {
       description: "إدارة الفواتير والمدفوعات",
       color: "bg-green-500",
       href: "/dashboard/finance"
+    },
+    {
+      icon: Calculator,
+      title: "المحاسبة",
+      description: "إدارة الحسابات والقيود",
+      color: "bg-emerald-500",
+      href: "/dashboard/accounting"
     },
     {
       icon: Users,
