@@ -22,6 +22,7 @@ import {
   Clock,
   FileText,
   Users,
+  User,
   Wrench,
   TrendingUp,
   Calendar,
