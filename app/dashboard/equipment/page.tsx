@@ -192,30 +192,42 @@ export default function EquipmentPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">المعدات الإنشائية</h1>
-          <p className="text-gray-600 mt-1">إدارة ومتابعة المعدات والآليات الثقيلة</p>
-        </div>
-        <div className="flex gap-2">
-          <Link href="/dashboard/equipment/maintenance">
-            <Button variant="outline" size="sm">
-              <Wrench className="h-4 w-4 mr-2" />
-              الصيانة
-            </Button>
-          </Link>
-          <Link href="/dashboard/equipment/new">
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              معدة جديدة
-            </Button>
-          </Link>
+      {/* Enhanced Header */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-600 via-orange-700 to-amber-800 p-6 sm:p-8 text-white shadow-2xl">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE0QzMyIDIwIDI4IDIyIDIyIDIyIDIwIDI1IDE1IDI1IDEwIDI1IDUgMjUgMCAyNSAwIDIwIDAgMTUgMCAxMCA1IDEwIDEwIDEwIDE1IDEwIDE1IDVIMjBDMjUgNSAzMCA1IDMwIDEwIDMwIDE1IDMwIDIwIDM2IDE0WiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
+        <div className="relative z-10">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3 sm:p-4 bg-white/10 backdrop-blur-sm rounded-2xl">
+                <Truck className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">المعدات الإنشائية</h1>
+                <p className="text-orange-100 text-sm sm:text-base lg:text-lg">إدارة شاملة للآليات والمعدات الثقيلة</p>
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+              <Link href="/dashboard/equipment/maintenance">
+                <Button variant="outline" className="bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-sm text-sm w-full sm:w-auto">
+                  <Wrench className="h-4 w-4 mr-2" />
+                  <span className="hidden sm:inline">جدول الصيانة</span>
+                  <span className="sm:hidden">صيانة</span>
+                </Button>
+              </Link>
+              <Link href="/dashboard/equipment/new">
+                <Button className="bg-white text-orange-600 hover:bg-orange-50 shadow-lg text-sm w-full sm:w-auto">
+                  <Plus className="h-4 w-4 mr-2" />
+                  <span className="hidden sm:inline">معدة جديدة</span>
+                  <span className="sm:hidden">معدة</span>
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6 gap-4">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -302,7 +314,7 @@ export default function EquipmentPage() {
       </div>
 
       {/* Equipment Types */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         {equipmentTypes.map((type) => {
           const Icon = type.icon
           return (
@@ -320,7 +332,7 @@ export default function EquipmentPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -335,7 +347,7 @@ export default function EquipmentPage() {
         <select
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
         >
           <option value="all">جميع الحالات</option>
           <option value="in-use">قيد التشغيل</option>
@@ -343,14 +355,18 @@ export default function EquipmentPage() {
           <option value="maintenance">في الصيانة</option>
           <option value="out-of-service">خارج الخدمة</option>
         </select>
-        <Button variant="outline" size="sm">
-          <Filter className="h-4 w-4 mr-2" />
-          فلترة
-        </Button>
-        <Button variant="outline" size="sm">
-          <Download className="h-4 w-4 mr-2" />
-          تصدير
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
+            <Filter className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">فلترة</span>
+            <span className="sm:hidden">فلتر</span>
+          </Button>
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
+            <Download className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">تصدير</span>
+            <span className="sm:hidden">تصدير</span>
+          </Button>
+        </div>
       </div>
 
       {/* Equipment List */}

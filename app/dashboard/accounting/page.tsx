@@ -128,31 +128,34 @@ export default function AccountingPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">المحاسبة المالية للمقاولات</h1>
-          <p className="text-gray-600 mt-1">إدارة الحسابات والعمليات المالية للمشاريع الإنشائية</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">المحاسبة المالية للمقاولات</h1>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">إدارة الحسابات والعمليات المالية للمشاريع الإنشائية</p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm">
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
             <Download className="h-4 w-4 mr-2" />
-            تصدير
+            <span className="hidden sm:inline">تصدير</span>
+            <span className="sm:hidden">تصدير</span>
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
             <Upload className="h-4 w-4 mr-2" />
-            استيراد
+            <span className="hidden sm:inline">استيراد</span>
+            <span className="sm:hidden">استيراد</span>
           </Button>
           <Link href="/dashboard/accounting/new-transaction">
-            <Button>
+            <Button className="w-full sm:w-auto">
               <Plus className="h-4 w-4 mr-2" />
-              إضافة قيد
+              <span className="hidden sm:inline">إضافة قيد</span>
+              <span className="sm:hidden">قيد</span>
             </Button>
           </Link>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -226,7 +229,7 @@ export default function AccountingPage() {
 
       {/* Tabs */}
       <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8">
+        <nav className="-mb-px flex flex-wrap gap-2 sm:gap-4">
           {[
             { id: "accounts", label: "الحسابات", icon: BookOpen },
             { id: "transactions", label: "القيود اليومية", icon: Receipt },
@@ -237,14 +240,15 @@ export default function AccountingPage() {
               <button
                 key={tab.id}
                 onClick={() => setSelectedTab(tab.id)}
-                className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
                   selectedTab === tab.id
                     ? "border-blue-500 text-blue-600"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 <Icon className="h-4 w-4" />
-                {tab.label}
+                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
               </button>
             )
           })}
@@ -252,7 +256,7 @@ export default function AccountingPage() {
       </div>
 
       {/* Search and Filter */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -264,15 +268,16 @@ export default function AccountingPage() {
             />
           </div>
         </div>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" className="w-full sm:w-auto">
           <Filter className="h-4 w-4 mr-2" />
-          فلترة
+          <span className="hidden sm:inline">فلترة</span>
+          <span className="sm:hidden">فلتر</span>
         </Button>
       </div>
 
       {/* Content based on selected tab */}
       {selectedTab === "accounts" && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <div className="lg:col-span-2">
             <Card>
               <CardHeader>

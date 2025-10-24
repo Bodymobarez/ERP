@@ -232,29 +232,31 @@ export default function FinancePage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">الإدارة المالية للمقاولات</h1>
-          <p className="text-gray-600 mt-1">إدارة المستخلصات والمدفوعات والأجور</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">الإدارة المالية للمقاولات</h1>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">إدارة المستخلصات والمدفوعات والأجور</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Link href="/dashboard/finance/cash-flow">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
               <TrendingUp className="h-4 w-4 mr-2" />
-              التدفقات النقدية
+              <span className="hidden sm:inline">التدفقات النقدية</span>
+              <span className="sm:hidden">تدفقات</span>
             </Button>
           </Link>
           <Link href="/dashboard/finance/new-payment">
-            <Button>
+            <Button className="w-full sm:w-auto">
               <Plus className="h-4 w-4 mr-2" />
-              مستخلص جديد
+              <span className="hidden sm:inline">مستخلص جديد</span>
+              <span className="sm:hidden">مستخلص</span>
             </Button>
           </Link>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -356,45 +358,48 @@ export default function FinancePage() {
 
       {/* Tabs */}
       <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8">
+        <nav className="-mb-px flex flex-wrap gap-2 sm:gap-4">
           <button
             onClick={() => setSelectedTab("progress")}
-            className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm ${
+            className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
               selectedTab === "progress"
                 ? "border-blue-500 text-blue-600"
                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
             }`}
           >
             <FileText className="h-4 w-4" />
-            المستخلصات
+            <span className="hidden sm:inline">المستخلصات</span>
+            <span className="sm:hidden">مستخلصات</span>
           </button>
           <button
             onClick={() => setSelectedTab("suppliers")}
-            className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm ${
+            className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
               selectedTab === "suppliers"
                 ? "border-blue-500 text-blue-600"
                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
             }`}
           >
             <Package className="h-4 w-4" />
-            مدفوعات الموردين
+            <span className="hidden sm:inline">مدفوعات الموردين</span>
+            <span className="sm:hidden">موردين</span>
           </button>
           <button
             onClick={() => setSelectedTab("wages")}
-            className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm ${
+            className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
               selectedTab === "wages"
                 ? "border-blue-500 text-blue-600"
                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
             }`}
           >
             <Receipt className="h-4 w-4" />
-            أجور العمال
+            <span className="hidden sm:inline">أجور العمال</span>
+            <span className="sm:hidden">أجور</span>
           </button>
         </nav>
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -410,23 +415,26 @@ export default function FinancePage() {
             />
           </div>
         </div>
-        {selectedTab !== "wages" && (
-          <select
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="all">جميع الحالات</option>
-            <option value="pending">قيد المراجعة</option>
-            <option value="approved">معتمد</option>
-            <option value="paid">مدفوع</option>
-            {selectedTab === "suppliers" && <option value="overdue">متأخر</option>}
-          </select>
-        )}
-        <Button variant="outline" size="sm">
-          <Download className="h-4 w-4 mr-2" />
-          تصدير
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          {selectedTab !== "wages" && (
+            <select
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
+            >
+              <option value="all">جميع الحالات</option>
+              <option value="pending">قيد المراجعة</option>
+              <option value="approved">معتمد</option>
+              <option value="paid">مدفوع</option>
+              {selectedTab === "suppliers" && <option value="overdue">متأخر</option>}
+            </select>
+          )}
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
+            <Download className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">تصدير</span>
+            <span className="sm:hidden">تصدير</span>
+          </Button>
+        </div>
       </div>
 
       {/* Content */}
@@ -435,46 +443,48 @@ export default function FinancePage() {
           {filteredProgressPayments.map((payment) => (
             <Card key={payment.id} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4 gap-4">
                   <div className="flex items-start gap-4">
-                    <div className={`p-4 rounded-lg ${getStatusColor(payment.status)}`}>
-                      <FileText className="h-10 w-10" />
+                    <div className={`p-3 sm:p-4 rounded-lg ${getStatusColor(payment.status)}`}>
+                      <FileText className="h-8 w-8 sm:h-10 sm:w-10" />
                     </div>
-                    <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-bold text-2xl">{payment.id}</h3>
-                        <Badge className={getStatusColor(payment.status)}>
-                          {getStatusLabel(payment.status)}
-                        </Badge>
-                        <Badge variant="outline" className="text-blue-600 border-blue-600">
-                          {payment.completionPercentage}% مكتمل
-                        </Badge>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                        <h3 className="font-bold text-xl sm:text-2xl">{payment.id}</h3>
+                        <div className="flex flex-wrap gap-2">
+                          <Badge className={getStatusColor(payment.status)}>
+                            {getStatusLabel(payment.status)}
+                          </Badge>
+                          <Badge variant="outline" className="text-blue-600 border-blue-600">
+                            {payment.completionPercentage}% مكتمل
+                          </Badge>
+                        </div>
                       </div>
-                      <p className="text-lg font-semibold mb-1">{payment.currentPayment.description}</p>
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
-                        <span className="flex items-center gap-1">
-                          <Building2 className="h-4 w-4" />
-                          {payment.project}
+                      <p className="text-base sm:text-lg font-semibold mb-1 truncate">{payment.currentPayment.description}</p>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-600">
+                        <span className="flex items-center gap-1 truncate">
+                          <Building2 className="h-4 w-4 flex-shrink-0" />
+                          <span className="truncate">{payment.project}</span>
                         </span>
                         <span className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
+                          <Calendar className="h-4 w-4 flex-shrink-0" />
                           {payment.date}
                         </span>
-                        <span className="flex items-center gap-1">
-                          <User className="h-4 w-4" />
-                          {payment.consultant}
+                        <span className="flex items-center gap-1 truncate">
+                          <User className="h-4 w-4 flex-shrink-0" />
+                          <span className="truncate">{payment.consultant}</span>
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="text-left">
                     <p className="text-sm text-gray-600">صافي المستحق</p>
-                    <p className="text-3xl font-bold text-green-600">{formatCurrency(payment.currentPayment.netAmount)}</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-green-600">{formatCurrency(payment.currentPayment.netAmount)}</p>
                   </div>
                 </div>
 
                 {/* Financial Breakdown */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
                   <div className="p-3 bg-purple-50 rounded-lg">
                     <p className="text-xs text-gray-600 mb-1">قيمة العقد</p>
                     <p className="text-lg font-bold text-purple-600">{formatCurrency(payment.contractValue)}</p>

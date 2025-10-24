@@ -233,35 +233,38 @@ export default function InventoryPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">مخزون مواد البناء</h1>
-          <p className="text-gray-600 mt-1">إدارة ومتابعة مواد البناء والتشييد</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">مخزون مواد البناء</h1>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">إدارة ومتابعة مواد البناء والتشييد</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Link href="/dashboard/inventory/orders">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
               <ShoppingCart className="h-4 w-4 mr-2" />
-              الطلبات
+              <span className="hidden sm:inline">الطلبات</span>
+              <span className="sm:hidden">طلبات</span>
             </Button>
           </Link>
           <Link href="/dashboard/inventory/transfers">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
               <Truck className="h-4 w-4 mr-2" />
-              النقل
+              <span className="hidden sm:inline">النقل</span>
+              <span className="sm:hidden">نقل</span>
             </Button>
           </Link>
           <Link href="/dashboard/inventory/new">
-            <Button>
+            <Button className="w-full sm:w-auto">
               <Plus className="h-4 w-4 mr-2" />
-              صنف جديد
+              <span className="hidden sm:inline">صنف جديد</span>
+              <span className="sm:hidden">صنف</span>
             </Button>
           </Link>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -334,7 +337,7 @@ export default function InventoryPage() {
       </div>
 
       {/* Categories */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
         {categories.map((category) => (
           <Card key={category.id} className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardContent className="p-4 text-center">
@@ -349,7 +352,7 @@ export default function InventoryPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -361,24 +364,28 @@ export default function InventoryPage() {
             />
           </div>
         </div>
-        <select
-          value={selectedStatus}
-          onChange={(e) => setSelectedStatus(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="all">جميع الحالات</option>
-          <option value="in-stock">متوفر</option>
-          <option value="low-stock">كمية قليلة</option>
-          <option value="out-of-stock">نفذت الكمية</option>
-        </select>
-        <Button variant="outline" size="sm">
-          <Filter className="h-4 w-4 mr-2" />
-          فلترة
-        </Button>
-        <Button variant="outline" size="sm">
-          <Download className="h-4 w-4 mr-2" />
-          تصدير
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <select
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
+          >
+            <option value="all">جميع الحالات</option>
+            <option value="in-stock">متوفر</option>
+            <option value="low-stock">كمية قليلة</option>
+            <option value="out-of-stock">نفذت الكمية</option>
+          </select>
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
+            <Filter className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">فلترة</span>
+            <span className="sm:hidden">فلتر</span>
+          </Button>
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
+            <Download className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">تصدير</span>
+            <span className="sm:hidden">تصدير</span>
+          </Button>
+        </div>
       </div>
 
       {/* Inventory Table */}

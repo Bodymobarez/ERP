@@ -138,73 +138,99 @@ export default function SitesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <Link href="/dashboard/projects">
-          <Button variant="outline" size="sm">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            العودة
-          </Button>
-        </Link>
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">مواقع العمل</h1>
-          <p className="text-gray-600 mt-1">إدارة ومتابعة مواقع البناء والتشييد</p>
+      {/* Enhanced Header with Background */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-600 via-green-700 to-emerald-800 p-6 sm:p-8 text-white shadow-2xl">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE0QzMyIDIwIDI4IDIyIDIyIDIyIDIwIDI1IDE1IDI1IDEwIDI1IDUgMjUgMCAyNSAwIDIwIDAgMTUgMCAxMCA1IDEwIDEwIDEwIDE1IDEwIDE1IDVIMjBDMjUgNSAzMCA1IDMwIDEwIDMwIDE1IDMwIDIwIDM2IDE0WiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
+        <div className="relative z-10">
+          <Link href="/dashboard/projects">
+            <Button variant="ghost" className="text-white hover:bg-white/10 mb-4">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">العودة للمشاريع</span>
+              <span className="sm:hidden">العودة</span>
+            </Button>
+          </Link>
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3 sm:p-4 bg-white/10 backdrop-blur-sm rounded-2xl">
+                <MapPin className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">مواقع العمل</h1>
+                <p className="text-green-100 text-sm sm:text-base lg:text-lg">إدارة ومراقبة مواقع البناء والتشييد الميدانية</p>
+              </div>
+            </div>
+            <Link href="/dashboard/projects/sites/new">
+              <Button className="bg-white text-green-600 hover:bg-green-50 shadow-lg text-sm w-full sm:w-auto">
+                <Plus className="h-4 w-4 mr-2" />
+                <span className="hidden sm:inline">موقع جديد</span>
+                <span className="sm:hidden">موقع</span>
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
+      {/* Enhanced Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <Card className="relative overflow-hidden group hover:shadow-xl transition-all duration-300 border-l-4 border-l-blue-500">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded-bl-full opacity-10 group-hover:opacity-20 transition-opacity"></div>
+          <CardContent className="p-6 relative z-10">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">إجمالي المواقع</p>
-                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-sm font-medium text-gray-600 mb-2">إجمالي المواقع</p>
+                <p className="text-4xl font-bold text-gray-900">{stats.total}</p>
+                <p className="text-xs text-blue-600 mt-2">موقع إنشائي</p>
               </div>
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <MapPin className="h-5 w-5 text-blue-600" />
+              <div className="p-4 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg">
+                <MapPin className="h-8 w-8 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
+        <Card className="relative overflow-hidden group hover:shadow-xl transition-all duration-300 border-l-4 border-l-green-500">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-bl-full opacity-10 group-hover:opacity-20 transition-opacity"></div>
+          <CardContent className="p-6 relative z-10">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">مواقع نشطة</p>
-                <p className="text-2xl font-bold text-green-600">{stats.active}</p>
+                <p className="text-sm font-medium text-gray-600 mb-2">مواقع نشطة</p>
+                <p className="text-4xl font-bold text-green-600">{stats.active}</p>
+                <p className="text-xs text-green-600 mt-2">قيد التنفيذ</p>
               </div>
-              <div className="p-2 bg-green-100 rounded-lg">
-                <Building2 className="h-5 w-5 text-green-600" />
+              <div className="p-4 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-lg">
+                <Building2 className="h-8 w-8 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
+        <Card className="relative overflow-hidden group hover:shadow-xl transition-all duration-300 border-l-4 border-l-orange-500">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-400 to-orange-600 rounded-bl-full opacity-10 group-hover:opacity-20 transition-opacity"></div>
+          <CardContent className="p-6 relative z-10">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">إجمالي العمال</p>
-                <p className="text-2xl font-bold text-orange-600">{stats.totalWorkers}</p>
+                <p className="text-sm font-medium text-gray-600 mb-2">إجمالي العمال</p>
+                <p className="text-4xl font-bold text-orange-600">{stats.totalWorkers}</p>
+                <p className="text-xs text-orange-600 mt-2">يد عاملة</p>
               </div>
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <Users className="h-5 w-5 text-orange-600" />
+              <div className="p-4 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl shadow-lg">
+                <HardHat className="h-8 w-8 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
+        <Card className="relative overflow-hidden group hover:shadow-xl transition-all duration-300 border-l-4 border-l-purple-500">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400 to-purple-600 rounded-bl-full opacity-10 group-hover:opacity-20 transition-opacity"></div>
+          <CardContent className="p-6 relative z-10">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">إجمالي المعدات</p>
-                <p className="text-2xl font-bold text-purple-600">{stats.totalEquipment}</p>
+                <p className="text-sm font-medium text-gray-600 mb-2">إجمالي المعدات</p>
+                <p className="text-4xl font-bold text-purple-600">{stats.totalEquipment}</p>
+                <p className="text-xs text-purple-600 mt-2">معدة ثقيلة</p>
               </div>
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <Truck className="h-5 w-5 text-purple-600" />
+              <div className="p-4 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg">
+                <Truck className="h-8 w-8 text-white" />
               </div>
             </div>
           </CardContent>
@@ -212,7 +238,7 @@ export default function SitesPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -224,45 +250,50 @@ export default function SitesPage() {
             />
           </div>
         </div>
-        <select
-          value={selectedStatus}
-          onChange={(e) => setSelectedStatus(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="all">جميع الحالات</option>
-          <option value="active">نشط</option>
-          <option value="planning">التخطيط</option>
-          <option value="on-hold">متوقف</option>
-          <option value="completed">مكتمل</option>
-        </select>
-        <Button variant="outline" size="sm">
-          <Download className="h-4 w-4 mr-2" />
-          تصدير
-        </Button>
-        <Link href="/dashboard/projects/sites/new">
-          <Button size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            موقع جديد
+        <div className="flex flex-col sm:flex-row gap-2">
+          <select
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
+          >
+            <option value="all">جميع الحالات</option>
+            <option value="active">نشط</option>
+            <option value="planning">التخطيط</option>
+            <option value="on-hold">متوقف</option>
+            <option value="completed">مكتمل</option>
+          </select>
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
+            <Download className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">تصدير</span>
+            <span className="sm:hidden">تصدير</span>
           </Button>
-        </Link>
+          <Link href="/dashboard/projects/sites/new">
+            <Button size="sm" className="w-full sm:w-auto">
+              <Plus className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">موقع جديد</span>
+              <span className="sm:hidden">موقع</span>
+            </Button>
+          </Link>
+        </div>
       </div>
 
-      {/* Sites Grid */}
-      <div className="grid gap-6 md:grid-cols-2">
+      {/* Enhanced Sites Grid */}
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2">
         {filteredSites.map((site) => (
-          <Card key={site.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
+          <Card key={site.id} className="relative overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 hover:border-green-200 group">
+            <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-green-500 to-blue-500"></div>
+            <CardHeader className="bg-gradient-to-r from-gray-50 to-white">
               <div className="flex items-start justify-between">
-                <div className="flex items-start gap-3">
-                  <div className={`p-3 rounded-lg ${getStatusColor(site.status)}`}>
-                    <Building2 className="h-6 w-6" />
+                <div className="flex items-start gap-4">
+                  <div className={`p-3 rounded-xl shadow-lg ${site.status === 'active' ? 'bg-gradient-to-br from-green-500 to-green-600' : 'bg-gradient-to-br from-gray-500 to-gray-600'} group-hover:scale-110 transition-transform`}>
+                    <Building2 className="h-7 w-7 text-white" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg">{site.name}</CardTitle>
-                    <CardDescription className="mt-1">{site.project}</CardDescription>
+                    <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors">{site.name}</CardTitle>
+                    <CardDescription className="mt-1 text-sm font-medium">{site.project}</CardDescription>
                   </div>
                 </div>
-                <Badge className={getStatusColor(site.status)}>
+                <Badge className={`${getStatusColor(site.status)} px-3 py-1 text-sm font-semibold`}>
                   {getStatusLabel(site.status)}
                 </Badge>
               </div>

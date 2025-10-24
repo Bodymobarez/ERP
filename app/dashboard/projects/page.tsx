@@ -35,6 +35,16 @@ import { useLanguage } from "@/lib/language-context"
 import { formatCurrency } from "@/lib/utils"
 import Link from "next/link"
 
+// دالة لتقليل الأصفار وتحويل الأرقام لصيغة مختصرة
+const formatNumber = (num: number): string => {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
+  }
+  return num.toString()
+}
+
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -78,26 +88,26 @@ export default function ProjectsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">المشاريع الإنشائية</h1>
-          <p className="text-gray-600 mt-1">إدارة ومتابعة جميع المشاريع الإنشائية والمقاولات</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">المشاريع الإنشائية</h1>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">إدارة ومتابعة جميع المشاريع الإنشائية والمقاولات</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Link href="/dashboard/projects/sites">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
               <MapPin className="h-4 w-4 mr-2" />
               المواقع
             </Button>
           </Link>
           <Link href="/dashboard/projects/bom">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
               <Ruler className="h-4 w-4 mr-2" />
               الكميات
             </Button>
           </Link>
           <Link href="/dashboard/projects/new">
-            <Button>
+            <Button className="w-full sm:w-auto">
               <Plus className="h-4 w-4 mr-2" />
               مشروع جديد
             </Button>
@@ -106,7 +116,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -168,7 +178,7 @@ export default function ProjectsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">إجمالي العقود</p>
-                <p className="text-xl font-bold mt-1 text-purple-600">{formatCurrency(stats.totalBudget)}</p>
+                <p className="text-xl font-bold mt-1 text-purple-600">{formatNumber(stats.totalBudget)} ريال</p>
               </div>
               <div className="bg-purple-500 text-white p-3 rounded-lg">
                 <DollarSign className="h-6 w-6" />
@@ -182,7 +192,7 @@ export default function ProjectsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">التكلفة الفعلية</p>
-                <p className="text-xl font-bold mt-1 text-orange-600">{formatCurrency(stats.totalActualCost)}</p>
+                <p className="text-xl font-bold mt-1 text-orange-600">{formatNumber(stats.totalActualCost)} ريال</p>
               </div>
               <div className="bg-orange-500 text-white p-3 rounded-lg">
                 <TrendingUp className="h-6 w-6" />
@@ -194,7 +204,7 @@ export default function ProjectsPage() {
 
       {/* Tabs */}
       <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8">
+        <nav className="-mb-px flex flex-wrap gap-2 sm:gap-4">
           {[
             { id: "grid", label: "عرض البطاقات", icon: Building2 },
             { id: "list", label: "عرض القائمة", icon: FileText },
@@ -205,14 +215,15 @@ export default function ProjectsPage() {
               <button
                 key={tab.id}
                 onClick={() => setSelectedTab(tab.id)}
-                className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
                   selectedTab === tab.id
                     ? "border-blue-500 text-blue-600"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 <Icon className="h-4 w-4" />
-                {tab.label}
+                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
               </button>
             )
           })}
@@ -220,7 +231,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -235,7 +246,7 @@ export default function ProjectsPage() {
         <select
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
         >
           <option value="all">جميع الحالات</option>
           <option value="planning">التخطيط</option>
@@ -244,14 +255,18 @@ export default function ProjectsPage() {
           <option value="completed">مكتمل</option>
           <option value="cancelled">ملغي</option>
         </select>
-        <Button variant="outline" size="sm">
-          <Filter className="h-4 w-4 mr-2" />
-          فلترة
-        </Button>
-        <Button variant="outline" size="sm">
-          <Download className="h-4 w-4 mr-2" />
-          تصدير
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
+            <Filter className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">فلترة</span>
+            <span className="sm:hidden">فلتر</span>
+          </Button>
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
+            <Download className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">تصدير</span>
+            <span className="sm:hidden">تصدير</span>
+          </Button>
+        </div>
       </div>
 
       {/* Content */}
@@ -260,7 +275,7 @@ export default function ProjectsPage() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
       ) : selectedTab === "grid" ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
             <Card key={project.id} className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
@@ -301,7 +316,7 @@ export default function ProjectsPage() {
                         <DollarSign className="h-4 w-4 mr-2 text-purple-500" />
                         <span className="font-medium">قيمة العقد:</span>
                       </div>
-                      <span className="font-bold text-purple-600">{formatCurrency(project.budget)}</span>
+                      <span className="font-bold text-purple-600">{formatNumber(project.budget)} ريال</span>
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
@@ -309,7 +324,7 @@ export default function ProjectsPage() {
                         <TrendingUp className="h-4 w-4 mr-2 text-orange-500" />
                         <span className="font-medium">التكلفة الفعلية:</span>
                       </div>
-                      <span className="font-bold text-orange-600">{formatCurrency(project.actualCost || 0)}</span>
+                      <span className="font-bold text-orange-600">{formatNumber(project.actualCost || 0)} ريال</span>
                     </div>
                   </div>
                   
@@ -344,14 +359,16 @@ export default function ProjectsPage() {
                     <PriorityBadge priority={project.priority} />
                   </div>
 
-                  <div className="flex gap-2 pt-2">
+                  <div className="flex flex-col sm:flex-row gap-2 pt-2">
                     <Button variant="outline" size="sm" className="flex-1">
                       <Eye className="h-4 w-4 mr-2" />
-                      عرض
+                      <span className="hidden sm:inline">عرض</span>
+                      <span className="sm:hidden">عرض</span>
                     </Button>
                     <Button variant="outline" size="sm" className="flex-1">
                       <Edit className="h-4 w-4 mr-2" />
-                      تعديل
+                      <span className="hidden sm:inline">تعديل</span>
+                      <span className="sm:hidden">تعديل</span>
                     </Button>
                   </div>
                 </div>
@@ -367,60 +384,60 @@ export default function ProjectsPage() {
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[800px]">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-right p-4 font-semibold">الكود</th>
-                    <th className="text-right p-4 font-semibold">اسم المشروع</th>
-                    <th className="text-right p-4 font-semibold">نوع المشروع</th>
-                    <th className="text-right p-4 font-semibold">الحالة</th>
-                    <th className="text-right p-4 font-semibold">الأولوية</th>
-                    <th className="text-right p-4 font-semibold">التقدم</th>
-                    <th className="text-right p-4 font-semibold">قيمة العقد</th>
-                    <th className="text-right p-4 font-semibold">التكلفة الفعلية</th>
-                    <th className="text-right p-4 font-semibold">تاريخ البداية</th>
-                    <th className="text-right p-4 font-semibold">تاريخ التسليم</th>
-                    <th className="text-right p-4 font-semibold">الإجراءات</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm">الكود</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm">اسم المشروع</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm hidden sm:table-cell">نوع المشروع</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm">الحالة</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm hidden lg:table-cell">الأولوية</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm hidden lg:table-cell">التقدم</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm hidden md:table-cell">قيمة العقد</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm hidden md:table-cell">التكلفة الفعلية</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm hidden lg:table-cell">تاريخ البداية</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm hidden lg:table-cell">تاريخ التسليم</th>
+                    <th className="text-right p-2 sm:p-4 font-semibold text-xs sm:text-sm">الإجراءات</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredProjects.map((project) => (
                     <tr key={project.id} className="border-b hover:bg-gray-50">
-                      <td className="p-4 font-mono text-sm">{project.code}</td>
-                      <td className="p-4 font-medium">{project.name}</td>
-                      <td className="p-4">
-                        <Badge variant="outline">
+                      <td className="p-2 sm:p-4 font-mono text-xs sm:text-sm">{project.code}</td>
+                      <td className="p-2 sm:p-4 font-medium text-xs sm:text-sm">{project.name}</td>
+                      <td className="p-2 sm:p-4 hidden sm:table-cell">
+                        <Badge variant="outline" className="text-xs">
                           مباني سكنية
                         </Badge>
                       </td>
-                      <td className="p-4">
+                      <td className="p-2 sm:p-4">
                         <StatusBadge status={project.status} />
                       </td>
-                      <td className="p-4">
+                      <td className="p-2 sm:p-4 hidden lg:table-cell">
                         <PriorityBadge priority={project.priority} />
                       </td>
-                      <td className="p-4">
+                      <td className="p-2 sm:p-4 hidden lg:table-cell">
                         <div className="flex items-center gap-2">
-                          <div className="w-20 bg-gray-200 rounded-full h-2">
+                          <div className="w-16 sm:w-20 bg-gray-200 rounded-full h-2">
                             <div
                               className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full"
                               style={{ width: `${project.progress}%` }}
                             />
                           </div>
-                          <span className="text-sm font-medium">{project.progress}%</span>
+                          <span className="text-xs sm:text-sm font-medium">{project.progress}%</span>
                         </div>
                       </td>
-                      <td className="p-4 font-semibold text-purple-600">{formatCurrency(project.budget)}</td>
-                      <td className="p-4 font-semibold text-orange-600">{formatCurrency(project.actualCost || 0)}</td>
-                      <td className="p-4">{new Date(project.startDate).toLocaleDateString('ar-SA')}</td>
-                      <td className="p-4">{new Date(project.endDate).toLocaleDateString('ar-SA')}</td>
-                      <td className="p-4">
-                        <div className="flex gap-2">
-                          <Button variant="ghost" size="sm">
-                            <Eye className="h-4 w-4" />
+                      <td className="p-2 sm:p-4 font-semibold text-purple-600 text-xs sm:text-sm hidden md:table-cell">{formatNumber(project.budget)} ريال</td>
+                      <td className="p-2 sm:p-4 font-semibold text-orange-600 text-xs sm:text-sm hidden md:table-cell">{formatNumber(project.actualCost || 0)} ريال</td>
+                      <td className="p-2 sm:p-4 text-xs sm:text-sm hidden lg:table-cell">{new Date(project.startDate).toLocaleDateString('ar-SA')}</td>
+                      <td className="p-2 sm:p-4 text-xs sm:text-sm hidden lg:table-cell">{new Date(project.endDate).toLocaleDateString('ar-SA')}</td>
+                      <td className="p-2 sm:p-4">
+                        <div className="flex gap-1 sm:gap-2">
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm">
-                            <Edit className="h-4 w-4" />
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
                           </Button>
                         </div>
                       </td>
@@ -457,19 +474,19 @@ export default function ProjectsPage() {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-4 mb-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
                     <div className="p-3 bg-purple-50 rounded-lg">
                       <p className="text-xs text-gray-600 mb-1">قيمة العقد</p>
-                      <p className="text-lg font-bold text-purple-600">{formatCurrency(project.budget)}</p>
+                      <p className="text-sm sm:text-lg font-bold text-purple-600">{formatNumber(project.budget)} ريال</p>
                     </div>
                     <div className="p-3 bg-orange-50 rounded-lg">
                       <p className="text-xs text-gray-600 mb-1">التكلفة الفعلية</p>
-                      <p className="text-lg font-bold text-orange-600">{formatCurrency(project.actualCost || 0)}</p>
+                      <p className="text-sm sm:text-lg font-bold text-orange-600">{formatNumber(project.actualCost || 0)} ريال</p>
                     </div>
                   </div>
 
                   <div className="relative pt-2">
-                    <div className="flex justify-between text-xs text-gray-500 mb-2">
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-2 text-xs text-gray-500 mb-2">
                       <span>📅 البداية: {new Date(project.startDate).toLocaleDateString('ar-SA')}</span>
                       <span className="font-semibold text-blue-600">⚙️ {project.progress}% مكتمل</span>
                       <span>🏁 التسليم: {new Date(project.endDate).toLocaleDateString('ar-SA')}</span>
@@ -484,31 +501,31 @@ export default function ProjectsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between mt-3 pt-3 border-t">
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-3 pt-3 border-t">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600">
                       <span className="flex items-center gap-1">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />
                         {project._count?.tasks || 0} مهمة
                       </span>
                       <span className="flex items-center gap-1">
-                        <HardHat className="h-4 w-4 text-orange-600" />
+                        <HardHat className="h-3 w-3 sm:h-4 sm:w-4 text-orange-600" />
                         {project._count?.phases || 0} مرحلة
                       </span>
                       <span className="flex items-center gap-1">
-                        <Target className="h-4 w-4 text-blue-600" />
+                        <Target className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600" />
                         {project._count?.milestones || 0} معلم
                       </span>
                       <span className="flex items-center gap-1">
-                        <Users className="h-4 w-4 text-purple-600" />
+                        <Users className="h-3 w-3 sm:h-4 sm:w-4 text-purple-600" />
                         15 عامل
                       </span>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="ghost" size="sm">
-                        <Eye className="h-4 w-4" />
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
                       </Button>
-                      <Button variant="ghost" size="sm">
-                        <Edit className="h-4 w-4" />
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
                       </Button>
                     </div>
                   </div>
@@ -601,6 +618,7 @@ export default function ProjectsPage() {
           </Card>
         </Link>
       </div>
+
     </div>
   )
 }

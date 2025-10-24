@@ -105,32 +105,32 @@ export default function HRPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">إدارة العمالة والموارد البشرية</h1>
-          <p className="text-gray-600 mt-1">إدارة العمال والفنيين والمهندسين في المشاريع الإنشائية</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">إدارة العمالة والموارد البشرية</h1>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">إدارة العمال والفنيين والمهندسين في المشاريع الإنشائية</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Link href="/dashboard/hr/workers">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
               <Users className="h-4 w-4 mr-2" />
               العمال
             </Button>
           </Link>
           <Link href="/dashboard/hr/attendance">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
               <Clock className="h-4 w-4 mr-2" />
               الحضور
             </Button>
           </Link>
           <Link href="/dashboard/hr/payroll">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
               <DollarSign className="h-4 w-4 mr-2" />
               الأجور
             </Button>
           </Link>
           <Link href="/dashboard/hr/new">
-            <Button>
+            <Button className="w-full sm:w-auto">
               <Plus className="h-4 w-4 mr-2" />
               عامل جديد
             </Button>
@@ -139,7 +139,7 @@ export default function HRPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -213,7 +213,7 @@ export default function HRPage() {
 
       {/* Tabs */}
       <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8">
+        <nav className="-mb-px flex flex-wrap gap-2 sm:gap-4">
           {[
             { id: "employees", label: "الموظفين", icon: Users },
             { id: "attendance", label: "الحضور", icon: Clock },
@@ -225,14 +225,15 @@ export default function HRPage() {
               <button
                 key={tab.id}
                 onClick={() => setSelectedTab(tab.id)}
-                className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
                   selectedTab === tab.id
                     ? "border-blue-500 text-blue-600"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 <Icon className="h-4 w-4" />
-                {tab.label}
+                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
               </button>
             )
           })}
@@ -240,7 +241,7 @@ export default function HRPage() {
       </div>
 
       {/* Search */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -252,14 +253,18 @@ export default function HRPage() {
             />
           </div>
         </div>
-        <Button variant="outline" size="sm">
-          <Filter className="h-4 w-4 mr-2" />
-          فلترة
-        </Button>
-        <Button variant="outline" size="sm">
-          <Download className="h-4 w-4 mr-2" />
-          تصدير
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
+            <Filter className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">فلترة</span>
+            <span className="sm:hidden">فلتر</span>
+          </Button>
+          <Button variant="outline" size="sm" className="w-full sm:w-auto">
+            <Download className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">تصدير</span>
+            <span className="sm:hidden">تصدير</span>
+          </Button>
+        </div>
       </div>
 
       {/* Content based on selected tab */}
@@ -277,7 +282,7 @@ export default function HRPage() {
                 {filteredEmployees.map((employee) => (
                   <div
                     key={employee.id}
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
+                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border rounded-lg hover:bg-gray-50 gap-4"
                   >
                     <div className="flex items-center gap-4">
                       <Avatar className="h-12 w-12">
@@ -286,32 +291,34 @@ export default function HRPage() {
                           {getInitials(employee.firstName, employee.lastName)}
                         </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <h3 className="font-semibold">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold truncate">
                           {employee.firstName} {employee.lastName}
                         </h3>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Briefcase className="h-3 w-3" />
-                          <span>{employee.position}</span>
-                          <span>•</span>
-                          <span>{employee.department}</span>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <Briefcase className="h-3 w-3" />
+                            <span className="truncate">{employee.position}</span>
+                          </div>
+                          <span className="hidden sm:inline">•</span>
+                          <span className="truncate">{employee.department}</span>
                         </div>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 truncate">
                           {employee.email} • {employee.phone}
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                       <div className="text-right">
                         <p className="text-sm text-gray-600">الراتب</p>
                         <p className="font-semibold">{formatCurrency(employee.salary || 0)}</p>
                       </div>
                       <EmployeeStatusBadge status={employee.status} />
                       <div className="flex gap-2">
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                           <Edit className="h-4 w-4" />
                         </Button>
                       </div>
