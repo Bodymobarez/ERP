@@ -24,8 +24,8 @@ const accountSchema = z.object({
   }),
   parentAccountId: z.string().optional(),
   description: z.string().optional(),
-  openingBalance: z.number().default(0),
-  isActive: z.boolean().default(true),
+  openingBalance: z.number(),
+  isActive: z.boolean(),
 })
 
 type AccountFormValues = z.infer<typeof accountSchema>
@@ -50,7 +50,7 @@ export default function NewAccountPage() {
     defaultValues: {
       code: "",
       name: "",
-      type: undefined,
+      type: "asset",
       parentAccountId: "",
       description: "",
       openingBalance: 0,

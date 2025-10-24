@@ -17,7 +17,7 @@ import {
   Award,
   FileText,
   Eye,
-  Print,
+  Printer,
   Share2
 } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
@@ -272,7 +272,7 @@ export default function HRReportsPage() {
                       <Download className="h-4 w-4" />
                     </Button>
                     <Button variant="outline" size="sm">
-                      <Print className="h-4 w-4" />
+                      <Printer className="h-4 w-4" />
                     </Button>
                     <Button variant="outline" size="sm">
                       <Share2 className="h-4 w-4" />
