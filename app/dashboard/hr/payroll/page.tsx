@@ -175,7 +175,7 @@ export default function PayrollPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">عدد الموظفين</p>
-                <p className="text-2xl font-bold">{currentMonthStats.totalEmployees}</p>
+                <p className="text-2xl font-bold">{currentMonthStats?.totalEmployees || 0}</p>
               </div>
               <div className="p-2 bg-blue-100 rounded-lg">
                 <Users className="h-5 w-5 text-blue-600" />

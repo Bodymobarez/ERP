@@ -454,7 +454,7 @@ export default function CRMPage() {
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                   <div className="flex items-start gap-4">
                     <Avatar className="h-12 w-12">
-                      <AvatarImage src={client.avatar} />
+                      <AvatarImage src="" />
                       <AvatarFallback className="bg-blue-100 text-blue-600">
                         {client.name.charAt(0)}
                       </AvatarFallback>

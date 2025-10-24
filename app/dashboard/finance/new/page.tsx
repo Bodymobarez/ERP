@@ -91,7 +91,7 @@ export default function NewInvoicePage() {
 
   const updateItem = (index: number, field: string, value: string) => {
     const newItems = [...items]
-    newItems[index] = { ...newItems[index], [field]: value }
+    newItems[index] = { ...newItems[index], [field]: value } as any
     setItems(newItems)
   }
 

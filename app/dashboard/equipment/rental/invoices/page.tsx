@@ -253,11 +253,11 @@ export default function RentalInvoicesPage() {
   }
 
   const getStatusConfig = (status: string) => {
-    return statusConfig[status] || statusConfig.draft
+    return statusConfig[status as keyof typeof statusConfig] || statusConfig.draft
   }
 
   const getPaymentMethodConfig = (method: string) => {
-    return paymentMethods[method] || paymentMethods["تحويل بنكي"]
+    return paymentMethods[method as keyof typeof paymentMethods] || paymentMethods["تحويل بنكي"]
   }
 
   return (

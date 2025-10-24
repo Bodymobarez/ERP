@@ -19,6 +19,7 @@ import {
   BarChart3,
   PieChart,
   Calendar,
+  X,
   AlertTriangle,
   CheckCircle2,
   Package,
@@ -469,7 +470,7 @@ export default function EquipmentReportsPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
-                  <XCircle className="h-5 w-5 text-red-600" />
+                  <X className="h-5 w-5 text-red-600" />
                   <Badge className="bg-red-100 text-red-800">1</Badge>
                 </div>
                 <p className="text-sm text-gray-600">صيانة متأخرة</p>
