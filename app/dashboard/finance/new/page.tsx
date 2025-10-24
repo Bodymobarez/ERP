@@ -65,11 +65,11 @@ export default function NewInvoicePage() {
         router.push("/dashboard/finance")
         router.refresh()
       } else {
-        alert(t.errorOccurred || "Error creating invoice")
+        alert(t.errorOccurred || "حدث خطأ في إنشاء الفاتورة")
       }
     } catch (error) {
       console.error("Error:", error)
-      alert(t.errorOccurred || "Error creating invoice")
+      alert(t.errorOccurred || "حدث خطأ في إنشاء الفاتورة")
     } finally {
       setLoading(false)
     }

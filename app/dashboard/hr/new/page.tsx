@@ -48,11 +48,11 @@ export default function NewEmployeePage() {
         router.push("/dashboard/hr")
         router.refresh()
       } else {
-        alert(t.errorOccurred || "Error creating employee")
+        alert(t.errorOccurred || "حدث خطأ في إنشاء الموظف")
       }
     } catch (error) {
       console.error("Error:", error)
-      alert(t.errorOccurred || "Error creating employee")
+      alert(t.errorOccurred || "حدث خطأ في إنشاء الموظف")
     } finally {
       setLoading(false)
     }

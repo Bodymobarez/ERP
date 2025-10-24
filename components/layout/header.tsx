@@ -1,6 +1,6 @@
 "use client"
 
-import { Bell, Search, Languages, Building2, Menu, X } from "lucide-react"
+import { Bell, Search, Building2, Menu, X } from "lucide-react"
 import { signOut, useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -37,7 +37,7 @@ import {
 
 export function Header() {
   const { data: session } = useSession()
-  const { lang, toggleLanguage, t } = useLanguage()
+  const { t } = useLanguage()
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -85,30 +85,7 @@ export function Header() {
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
 
-            {/* Language Switcher Button */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/20">
-                  <Languages className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => toggleLanguage()}
-                  className={lang === 'en' ? 'bg-accent' : ''}
-                >
-                  <span className="mr-2 text-xl">🇬🇧</span>
-                  <span>English</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => toggleLanguage()}
-                  className={lang === 'ar' ? 'bg-accent' : ''}
-                >
-                  <span className="mr-2 text-xl">🇸🇦</span>
-                  <span>العربية</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+
 
             <NotificationsPanel />
 

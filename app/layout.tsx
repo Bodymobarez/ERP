@@ -6,8 +6,8 @@ import { Providers } from "@/components/providers"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Enterprise ERP System",
-  description: "Comprehensive Enterprise Resource Planning System",
+  title: "نظام إدارة المقاولات",
+  description: "نظام إدارة موارد المؤسسة الشامل",
 }
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <body className={inter.className}>
         <Providers>{children}</Providers>
       </body>
