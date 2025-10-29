@@ -9,6 +9,7 @@ import {
   Download,
   BarChart3,
   PieChart,
+  CheckCircle2,
   TrendingUp,
   Users,
   Calendar,
