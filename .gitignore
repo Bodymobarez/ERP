@@ -133,3 +133,6 @@ temp/
 *.sln
 *.sw?
 
+# History files
+.history/
+

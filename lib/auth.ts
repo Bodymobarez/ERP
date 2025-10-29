@@ -1,44 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
-
-// Mock user database for development
-const mockUsers = [
-  {
-    id: '1',
-    email: 'admin@example.com',
-    password: '$2a$10$7J8Q1X2X3X4X5X6X7X8X9uO.lPR7oI8MYKzv5/7eqMOXVWlAG3ybW', // admin123
-    firstName: 'Admin',
-    lastName: 'User',
-    avatar: null,
-    isActive: true,
-    roles: ['Admin'],
-    permissions: [
-      { resource: 'projects', action: 'read' },
-      { resource: 'projects', action: 'write' },
-      { resource: 'finance', action: 'read' },
-      { resource: 'hr', action: 'read' },
-    ],
-    companyId: '1',
-    branchId: '1',
-  },
-  {
-    id: '2',
-    email: 'manager@example.com',
-    password: '$2a$10$7J8Q1X2X3X4X5X6X7X8X9uO.lPR7oI8MYKzv5/7eqMOXVWlAG3ybW', // admin123
-    firstName: 'Manager',
-    lastName: 'User',
-    avatar: null,
-    isActive: true,
-    roles: ['Manager'],
-    permissions: [
-      { resource: 'projects', action: 'read' },
-      { resource: 'finance', action: 'read' },
-    ],
-    companyId: '1',
-    branchId: '1',
-  },
-]
+import { prisma } from './prisma'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -53,28 +16,75 @@ export const authOptions: NextAuthOptions = {
           throw new Error('بيانات الدخول مطلوبة')
         }
 
-        // Find user in mock database
-        const user = mockUsers.find(u => u.email === credentials.email)
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
+          include: {
+            roles: {
+              include: {
+                role: {
+                  include: {
+                    permissions: {
+                      include: {
+                        permission: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            permissions: {
+              include: {
+                permission: true,
+              },
+            },
+            company: true,
+            branch: true,
+          },
+        })
 
         if (!user || !user.isActive) {
           throw new Error('المستخدم غير موجود أو غير مفعل')
         }
 
-        // For development, allow simple password check
-        const isPasswordValid = credentials.password === 'admin123' || 
-          await bcrypt.compare(credentials.password, user.password)
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        )
 
         if (!isPasswordValid) {
           throw new Error('كلمة المرور غير صحيحة')
         }
+
+        // Update last login
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { lastLogin: new Date() },
+        })
+
+        // Extract permissions
+        const rolePermissions = user.roles.flatMap(ur => 
+          ur.role.permissions.map(rp => ({
+            resource: rp.permission.resource,
+            action: rp.permission.action,
+          }))
+        )
+        
+        const userPermissions = user.permissions.map(up => ({
+          resource: up.permission.resource,
+          action: up.permission.action,
+        }))
+
+        const allPermissions = [...rolePermissions, ...userPermissions]
 
         return {
           id: user.id,
           email: user.email,
           name: `${user.firstName} ${user.lastName}`,
           image: user.avatar,
-          roles: user.roles,
-          permissions: user.permissions,
+          roles: user.roles.map(ur => ur.role.name),
+          permissions: allPermissions,
           companyId: user.companyId,
           branchId: user.branchId,
         }
@@ -118,14 +128,44 @@ export async function checkPermission(
   resource: string,
   action: string
 ): Promise<boolean> {
-  // Find user in mock database
-  const user = mockUsers.find(u => u.id === userId)
-  
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      roles: {
+        include: {
+          role: {
+            include: {
+              permissions: {
+                include: {
+                  permission: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      permissions: {
+        include: {
+          permission: true,
+        },
+      },
+    },
+  })
+
   if (!user || !user.isActive) return false
 
-  // Check if user has the required permission
-  return user.permissions.some(permission =>
-    permission.resource === resource && permission.action === action
+  // Check role permissions
+  const hasRolePermission = user.roles.some(ur =>
+    ur.role.permissions.some(rp =>
+      rp.permission.resource === resource && rp.permission.action === action
+    )
   )
+
+  // Check user permissions
+  const hasUserPermission = user.permissions.some(up =>
+    up.permission.resource === resource && up.permission.action === action
+  )
+
+  return hasRolePermission || hasUserPermission
 }
 
