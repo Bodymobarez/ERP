@@ -118,14 +118,44 @@ export async function checkPermission(
   resource: string,
   action: string
 ): Promise<boolean> {
-  // Find user in mock database
-  const user = mockUsers.find(u => u.id === userId)
-  
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      roles: {
+        include: {
+          role: {
+            include: {
+              permissions: {
+                include: {
+                  permission: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      permissions: {
+        include: {
+          permission: true,
+        },
+      },
+    },
+  })
+
   if (!user || !user.isActive) return false
 
-  // Check if user has the required permission
-  return user.permissions.some(permission =>
-    permission.resource === resource && permission.action === action
+  // Check role permissions
+  const hasRolePermission = user.roles.some(ur =>
+    ur.role.permissions.some(rp =>
+      rp.permission.resource === resource && rp.permission.action === action
+    )
   )
+
+  // Check user permissions
+  const hasUserPermission = user.permissions.some(up =>
+    up.permission.resource === resource && up.permission.action === action
+  )
+
+  return hasRolePermission || hasUserPermission
 }
 
