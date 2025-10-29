@@ -189,7 +189,7 @@ export default function PayrollPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">الراتب الأساسي</p>
-                <p className="text-xl font-bold text-blue-600">{formatCurrency(currentMonthStats.basicSalary)}</p>
+                <p className="text-xl font-bold text-blue-600">{formatCurrency(currentMonthStats?.basicSalary || 0)}</p>
               </div>
               <div className="p-2 bg-blue-100 rounded-lg">
                 <DollarSign className="h-5 w-5 text-blue-600" />
@@ -203,7 +203,7 @@ export default function PayrollPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">البدلات</p>
-                <p className="text-xl font-bold text-green-600">{formatCurrency(currentMonthStats.allowances)}</p>
+                <p className="text-xl font-bold text-green-600">{formatCurrency(currentMonthStats?.allowances || 0)}</p>
               </div>
               <div className="p-2 bg-green-100 rounded-lg">
                 <TrendingUp className="h-5 w-5 text-green-600" />
@@ -217,7 +217,7 @@ export default function PayrollPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">الخصومات</p>
-                <p className="text-xl font-bold text-red-600">{formatCurrency(currentMonthStats.deductions)}</p>
+                <p className="text-xl font-bold text-red-600">{formatCurrency(currentMonthStats?.deductions || 0)}</p>
               </div>
               <div className="p-2 bg-red-100 rounded-lg">
                 <DollarSign className="h-5 w-5 text-red-600" />
@@ -231,7 +231,7 @@ export default function PayrollPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">الإجمالي</p>
-                <p className="text-xl font-bold text-purple-600">{formatCurrency(currentMonthStats.totalSalary)}</p>
+                <p className="text-xl font-bold text-purple-600">{formatCurrency(currentMonthStats?.totalSalary || 0)}</p>
               </div>
               <div className="p-2 bg-purple-100 rounded-lg">
                 <DollarSign className="h-5 w-5 text-purple-600" />
