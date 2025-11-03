@@ -302,6 +302,20 @@ export const translations = {
     employees: "الموظفين",
     growth: "النمو",
     
+    // ========== Settings / الإعدادات ==========
+    settingsTitle: "إعدادات النظام",
+    settingsDesc: "إدارة إعدادات النظام والمستخدم",
+    profileSettings: "إعدادات الملف الشخصي",
+    security: "الأمان",
+    notifications: "الإشعارات",
+    companySettings: "إعدادات الشركة",
+    systemSettings: "إعدادات النظام",
+    
+    // ========== Form Fields / حقول النموذج ==========
+    notes: "الملاحظات",
+    email: "البريد الإلكتروني",
+    phone: "رقم الهاتف",
+    
     // ========== Messages / الرسائل ==========
     successCreated: "تم الإنشاء بنجاح",
     successUpdated: "تم التحديث بنجاح",

@@ -108,9 +108,14 @@ export async function POST(request: Request) {
     const prefix = data.type === 'purchase' ? 'PO' : 'SO'
     let orderNumber = `${prefix}-${currentYear}-001`
     
-    if (lastOrder) {
-      const lastNumber = parseInt(lastOrder.orderNumber.split('-')[2])
-      orderNumber = `${prefix}-${currentYear}-${String(lastNumber + 1).padStart(3, '0')}`
+    if (lastOrder?.orderNumber) {
+      const orderParts = lastOrder.orderNumber.split('-')
+      if (orderParts.length >= 3 && orderParts[2]) {
+        const lastNumber = parseInt(orderParts[2])
+        if (!isNaN(lastNumber)) {
+          orderNumber = `${prefix}-${currentYear}-${String(lastNumber + 1).padStart(3, '0')}`
+        }
+      }
     }
 
     // Calculate total amount

@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
           select: {
             id: true,
             name: true,
-            type: true,
+            category: true,
             model: true,
             serialNumber: true,
             location: true,
@@ -204,7 +204,7 @@ export async function POST(request: NextRequest) {
           select: {
             id: true,
             name: true,
-            type: true,
+            category: true,
             model: true,
             serialNumber: true,
             location: true,
@@ -282,7 +282,7 @@ export async function PUT(request: NextRequest) {
           select: {
             id: true,
             name: true,
-            type: true,
+            category: true,
             model: true,
             serialNumber: true,
             location: true,
