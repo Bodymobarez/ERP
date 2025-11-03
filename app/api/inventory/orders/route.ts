@@ -36,7 +36,8 @@ export async function GET(request: Request) {
         createdByUser: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             email: true
           }
         }
@@ -73,7 +74,7 @@ export async function GET(request: Request) {
         unit: orderItem.item.unit
       })),
       notes: order.notes,
-      createdBy: order.createdByUser?.name || 'غير محدد',
+      createdBy: order.createdByUser ? `${order.createdByUser.firstName} ${order.createdByUser.lastName}` : 'غير محدد',
       createdAt: order.createdAt.toISOString(),
       updatedAt: order.updatedAt.toISOString()
     }))
@@ -151,7 +152,8 @@ export async function POST(request: Request) {
         createdByUser: {
           select: {
             id: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             email: true
           }
         }
@@ -185,7 +187,7 @@ export async function POST(request: Request) {
         unit: orderItem.item.unit
       })),
       notes: order.notes,
-      createdBy: order.createdByUser?.name || 'غير محدد',
+      createdBy: order.createdByUser ? `${order.createdByUser.firstName} ${order.createdByUser.lastName}` : 'غير محدد',
       createdAt: order.createdAt.toISOString(),
       updatedAt: order.updatedAt.toISOString()
     }
