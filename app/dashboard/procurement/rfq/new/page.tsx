@@ -20,7 +20,8 @@ import {
   Calendar,
   Users,
   AlertTriangle,
-  Info
+  Info,
+  CheckCircle2
 } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import Link from "next/link"

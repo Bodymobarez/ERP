@@ -21,7 +21,14 @@ import {
   Clock,
   AlertTriangle,
   Settings,
-  FileText
+  FileText,
+  X,
+  User,
+  Activity,
+  History,
+  Users,
+  MapPinIcon,
+  Zap
 } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { formatCurrency } from "@/lib/utils"
@@ -132,6 +139,11 @@ export default function EquipmentPage() {
   const { t, lang } = useLanguage()
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedStatus, setSelectedStatus] = useState("all")
+  const [selectedEquipment, setSelectedEquipment] = useState<any>(null)
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [showMaintenanceModal, setShowMaintenanceModal] = useState(false)
+  const [showHistoryModal, setShowHistoryModal] = useState(false)
 
   const filteredEquipment = mockEquipment.filter(eq => {
     const matchesSearch = eq.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -188,6 +200,475 @@ export default function EquipmentPage() {
       case "poor": return "سيئة"
       default: return condition
     }
+  }
+
+  // Mock maintenance history
+  const getMaintenanceHistory = (equipmentId: string) => [
+    {
+      id: "1",
+      date: "2024-01-10",
+      type: "صيانة دورية",
+      description: "تغيير الزيوت والفلاتر",
+      cost: 1500,
+      technician: "محمد أحمد",
+      status: "completed"
+    },
+    {
+      id: "2", 
+      date: "2023-12-15",
+      type: "إصلاح",
+      description: "إصلاح نظام الهيدروليك",
+      cost: 3200,
+      technician: "علي حسن",
+      status: "completed"
+    },
+    {
+      id: "3",
+      date: "2023-11-20",
+      type: "فحص شامل",
+      description: "فحص شامل وتقييم الحالة",
+      cost: 800,
+      technician: "فهد محمد",
+      status: "completed"
+    }
+  ]
+
+  // Mock activity history  
+  const getActivityHistory = (equipmentId: string) => [
+    {
+      id: "1",
+      date: "2024-01-15",
+      activity: "بدء التشغيل",
+      project: "البرج السكني - الرياض",
+      operator: "خالد محمد",
+      hours: 8
+    },
+    {
+      id: "2",
+      date: "2024-01-14", 
+      activity: "نقل للموقع",
+      project: "البرج السكني - الرياض",
+      operator: "خالد محمد",
+      hours: 2
+    },
+    {
+      id: "3",
+      date: "2024-01-10",
+      activity: "صيانة دورية",
+      project: "المستودع الرئيسي",
+      operator: "محمد أحمد",
+      hours: 4
+    }
+  ]
+
+  // Details Modal Component
+  const DetailsModal = () => {
+    if (!selectedEquipment) return null
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-between p-6 border-b">
+            <h2 className="text-2xl font-bold text-gray-900">تفاصيل المعدة</h2>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setShowDetailsModal(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <div className="p-6 space-y-6">
+            {/* Basic Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <Settings className="h-5 w-5 text-blue-500" />
+                  المعلومات الأساسية
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">اسم المعدة:</span>
+                    <span className="font-medium">{selectedEquipment.name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">النوع:</span>
+                    <span className="font-medium">{selectedEquipment.type}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">الموديل:</span>
+                    <span className="font-medium">{selectedEquipment.model}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">الرقم التسلسلي:</span>
+                    <span className="font-medium">{selectedEquipment.serialNumber}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">الحالة:</span>
+                    <Badge className={getStatusColor(selectedEquipment.status)}>
+                      {getStatusLabel(selectedEquipment.status)}
+                    </Badge>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">حالة المعدة:</span>
+                    <Badge className={getConditionColor(selectedEquipment.condition)}>
+                      {getConditionLabel(selectedEquipment.condition)}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <MapPin className="h-5 w-5 text-green-500" />
+                  الموقع والتشغيل
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">الموقع الحالي:</span>
+                    <span className="font-medium">{selectedEquipment.location}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">المشغل:</span>
+                    <span className="font-medium">{selectedEquipment.operator}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">ساعات التشغيل:</span>
+                    <span className="font-medium">{selectedEquipment.hoursUsed} ساعة</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">تاريخ الشراء:</span>
+                    <span className="font-medium">{selectedEquipment.purchaseDate}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Financial Info */}
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
+                <DollarSign className="h-5 w-5 text-purple-500" />
+                المعلومات المالية
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-purple-50 p-4 rounded-lg text-center">
+                  <p className="text-sm text-gray-600 mb-1">سعر الشراء</p>
+                  <p className="text-xl font-bold text-purple-600">{formatCurrency(selectedEquipment.purchasePrice)}</p>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-lg text-center">
+                  <p className="text-sm text-gray-600 mb-1">القيمة الحالية</p>
+                  <p className="text-xl font-bold text-blue-600">{formatCurrency(selectedEquipment.currentValue)}</p>
+                </div>
+                <div className="bg-orange-50 p-4 rounded-lg text-center">
+                  <p className="text-sm text-gray-600 mb-1">تكلفة الوقود</p>
+                  <p className="text-xl font-bold text-orange-600">{formatCurrency(selectedEquipment.fuelCost)}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Maintenance Info */}
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
+                <Wrench className="h-5 w-5 text-yellow-500" />
+                معلومات الصيانة
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">آخر صيانة:</span>
+                  <span className="font-medium">{selectedEquipment.maintenanceDate}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">الصيانة القادمة:</span>
+                  <span className="font-medium">{selectedEquipment.nextMaintenance}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Edit Modal Component
+  const EditModal = () => {
+    if (!selectedEquipment) return null
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-between p-6 border-b">
+            <h2 className="text-2xl font-bold text-gray-900">تعديل المعدة</h2>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setShowEditModal(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <div className="p-6">
+            <form className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">اسم المعدة</label>
+                  <Input defaultValue={selectedEquipment.name} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">النوع</label>
+                  <Input defaultValue={selectedEquipment.type} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">الموديل</label>
+                  <Input defaultValue={selectedEquipment.model} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">الموقع</label>
+                  <Input defaultValue={selectedEquipment.location} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">المشغل</label>
+                  <Input defaultValue={selectedEquipment.operator} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">الحالة</label>
+                  <select 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    defaultValue={selectedEquipment.status}
+                  >
+                    <option value="available">متاحة</option>
+                    <option value="in-use">قيد التشغيل</option>
+                    <option value="maintenance">في الصيانة</option>
+                    <option value="out-of-service">خارج الخدمة</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="flex gap-2 pt-4">
+                <Button type="submit" className="flex-1">
+                  <Edit className="h-4 w-4 mr-2" />
+                  حفظ التعديلات
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setShowEditModal(false)}
+                  className="flex-1"
+                >
+                  إلغاء
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Maintenance Modal Component
+  const MaintenanceModal = () => {
+    if (!selectedEquipment) return null
+    
+    const maintenanceHistory = getMaintenanceHistory(selectedEquipment.id)
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-between p-6 border-b">
+            <h2 className="text-2xl font-bold text-gray-900">إدارة الصيانة</h2>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setShowMaintenanceModal(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <div className="p-6 space-y-6">
+            {/* Maintenance Schedule */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-blue-500" />
+                  جدولة صيانة جديدة
+                </h3>
+                <form className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">نوع الصيانة</label>
+                    <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <option value="preventive">صيانة وقائية</option>
+                      <option value="repair">إصلاح</option>
+                      <option value="inspection">فحص شامل</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">التاريخ المخطط</label>
+                    <Input type="date" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">الوصف</label>
+                    <textarea 
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows={3}
+                      placeholder="وصف أعمال الصيانة المخططة..."
+                    />
+                  </div>
+                  <Button type="submit" className="w-full">
+                    <Plus className="h-4 w-4 mr-2" />
+                    جدولة الصيانة
+                  </Button>
+                </form>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-orange-500" />
+                  معلومات الصيانة الحالية
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">آخر صيانة:</span>
+                    <span className="font-medium">{selectedEquipment.maintenanceDate}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">الصيانة القادمة:</span>
+                    <span className="font-medium text-red-600">{selectedEquipment.nextMaintenance}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">ساعات التشغيل:</span>
+                    <span className="font-medium">{selectedEquipment.hoursUsed} ساعة</span>
+                  </div>
+                  <div className="p-3 bg-yellow-50 rounded-lg">
+                    <p className="text-sm text-yellow-800">
+                      <AlertTriangle className="h-4 w-4 inline mr-1" />
+                      الصيانة القادمة خلال أسبوعين
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Maintenance History */}
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
+                <History className="h-5 w-5 text-green-500" />
+                سجل الصيانة
+              </h3>
+              <div className="space-y-3">
+                {maintenanceHistory.map((record) => (
+                  <div key={record.id} className="border rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">{record.type}</Badge>
+                        <span className="text-sm text-gray-600">{record.date}</span>
+                      </div>
+                      <Badge className="bg-green-100 text-green-800">{record.status}</Badge>
+                    </div>
+                    <p className="text-sm text-gray-700 mb-2">{record.description}</p>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">الفني: {record.technician}</span>
+                      <span className="font-medium text-blue-600">{formatCurrency(record.cost)}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // History Modal Component  
+  const HistoryModal = () => {
+    if (!selectedEquipment) return null
+    
+    const activityHistory = getActivityHistory(selectedEquipment.id)
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-between p-6 border-b">
+            <h2 className="text-2xl font-bold text-gray-900">سجل النشاط</h2>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setShowHistoryModal(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <div className="p-6 space-y-6">
+            {/* Activity Timeline */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <Activity className="h-5 w-5 text-blue-500" />
+                سجل النشاط والتشغيل
+              </h3>
+              <div className="space-y-4">
+                {activityHistory.map((activity, index) => (
+                  <div key={activity.id} className="flex items-start gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center">
+                        <Activity className="h-5 w-5" />
+                      </div>
+                      {index < activityHistory.length - 1 && (
+                        <div className="w-0.5 h-16 bg-gray-200 mt-2" />
+                      )}
+                    </div>
+                    <div className="flex-1 border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-gray-900">{activity.activity}</h4>
+                        <span className="text-sm text-gray-500">{activity.date}</span>
+                      </div>
+                      <div className="space-y-1 text-sm text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4" />
+                          <span>المشروع: {activity.project}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <User className="h-4 w-4" />
+                          <span>المشغل: {activity.operator}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          <span>ساعات العمل: {activity.hours} ساعة</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Statistics */}
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
+                <FileText className="h-5 w-5 text-green-500" />
+                إحصائيات الاستخدام
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-blue-50 p-4 rounded-lg text-center">
+                  <p className="text-sm text-gray-600 mb-1">إجمالي ساعات التشغيل</p>
+                  <p className="text-xl font-bold text-blue-600">{selectedEquipment.hoursUsed} ساعة</p>
+                </div>
+                <div className="bg-green-50 p-4 rounded-lg text-center">
+                  <p className="text-sm text-gray-600 mb-1">عدد المشاريع</p>
+                  <p className="text-xl font-bold text-green-600">3 مشاريع</p>
+                </div>
+                <div className="bg-orange-50 p-4 rounded-lg text-center">
+                  <p className="text-sm text-gray-600 mb-1">متوسط الاستخدام اليومي</p>
+                  <p className="text-xl font-bold text-orange-600">8.5 ساعة</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -455,19 +936,51 @@ export default function EquipmentPage() {
               </div>
 
               <div className="flex gap-2 pt-4">
-                <Button variant="outline" size="sm" className="flex-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="flex-1"
+                  onClick={() => {
+                    setSelectedEquipment(equipment)
+                    setShowDetailsModal(true)
+                  }}
+                >
                   <Eye className="h-4 w-4 mr-2" />
                   عرض التفاصيل
                 </Button>
-                <Button variant="outline" size="sm" className="flex-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="flex-1"
+                  onClick={() => {
+                    setSelectedEquipment(equipment)
+                    setShowEditModal(true)
+                  }}
+                >
                   <Edit className="h-4 w-4 mr-2" />
                   تعديل
                 </Button>
-                <Button variant="outline" size="sm" className="flex-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="flex-1"
+                  onClick={() => {
+                    setSelectedEquipment(equipment)
+                    setShowMaintenanceModal(true)
+                  }}
+                >
                   <Wrench className="h-4 w-4 mr-2" />
                   صيانة
                 </Button>
-                <Button variant="outline" size="sm" className="flex-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="flex-1"
+                  onClick={() => {
+                    setSelectedEquipment(equipment)
+                    setShowHistoryModal(true)  
+                  }}
+                >
                   <FileText className="h-4 w-4 mr-2" />
                   السجل
                 </Button>
@@ -543,6 +1056,12 @@ export default function EquipmentPage() {
           </Card>
         </Link>
       </div>
+
+      {/* Modals */}
+      {showDetailsModal && <DetailsModal />}
+      {showEditModal && <EditModal />}
+      {showMaintenanceModal && <MaintenanceModal />}
+      {showHistoryModal && <HistoryModal />}
     </div>
   )
 }

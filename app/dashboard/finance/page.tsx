@@ -781,7 +781,7 @@ export default function FinancePage() {
       )}
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <Link href="/dashboard/finance/cash-flow">
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardContent className="p-6">
@@ -792,6 +792,22 @@ export default function FinancePage() {
                 <div>
                   <h3 className="font-semibold">التدفقات النقدية</h3>
                   <p className="text-sm text-gray-600">Cash Flow</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/finance/forecasts">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-indigo-100 rounded-lg">
+                  <TrendingUp className="h-6 w-6 text-indigo-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">التوقعات المالية</h3>
+                  <p className="text-sm text-gray-600">Forecasts</p>
                 </div>
               </div>
             </CardContent>

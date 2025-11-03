@@ -34,14 +34,15 @@ model User {
   permissions UserPermission[]
 
   // Relations to other modules
-  employeeProfile  Employee?
-  createdProjects  Project[]         @relation("CreatedBy")
-  assignedTasks    Task[]
-  createdInvoices  Invoice[]         @relation("CreatedBy")
-  createdPayments  Payment[]         @relation("CreatedBy")
-  approvals        Approval[]
-  notifications    Notification[]
-  documentVersions DocumentVersion[]
+  employeeProfile     Employee?
+  createdProjects     Project[]         @relation("CreatedBy")
+  assignedTasks       Task[]
+  createdInvoices     Invoice[]         @relation("CreatedBy")
+  createdPayments     Payment[]         @relation("CreatedBy")
+  approvals           Approval[]
+  notifications       Notification[]
+  documentVersions    DocumentVersion[]
+  inventoryOrders     InventoryOrder[]  @relation("InventoryOrderCreatedBy")
 
   @@index([email])
   @@index([companyId])
@@ -693,10 +694,11 @@ model Supplier {
   companyId String
   company   Company @relation(fields: [companyId], references: [id])
 
-  rfqs           RFQ[]
-  purchaseOrders PurchaseOrder[]
-  invoices       Invoice[]
-  contracts      Contract[]
+  rfqs             RFQ[]
+  purchaseOrders   PurchaseOrder[]
+  invoices         Invoice[]
+  contracts        Contract[]
+  inventoryOrders  InventoryOrder[]
 
   @@index([companyId])
   @@index([code])
@@ -729,6 +731,7 @@ model Item {
   purchaseRequestItems PurchaseRequestItem[]
   rfqItems             RFQItem[]
   purchaseOrderItems   PurchaseOrderItem[]
+  inventoryOrderItems  InventoryOrderItem[]
 
   @@index([sku])
   @@index([category])
@@ -796,6 +799,53 @@ model StockMovement {
   @@index([warehouseId])
   @@index([date])
   @@index([type])
+}
+
+model InventoryOrder {
+  id               String    @id @default(cuid())
+  orderNumber      String    @unique
+  type             String // purchase, sale
+  status           String    @default("pending") // pending, approved, processing, shipped, delivered, cancelled
+  priority         String    @default("medium") // low, medium, high, urgent
+  totalAmount      Decimal   @db.Decimal(15, 2)
+  orderDate        DateTime
+  expectedDelivery DateTime
+  actualDelivery   DateTime?
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  supplierId  String?
+  supplier    Supplier? @relation(fields: [supplierId], references: [id])
+  clientId    String?
+  client      Client?   @relation(fields: [clientId], references: [id])
+  createdById String
+  createdByUser User    @relation("InventoryOrderCreatedBy", fields: [createdById], references: [id])
+
+  items InventoryOrderItem[]
+
+  @@index([orderNumber])
+  @@index([type])
+  @@index([status])
+  @@index([supplierId])
+  @@index([clientId])
+  @@index([createdById])
+}
+
+model InventoryOrderItem {
+  id               String   @id @default(cuid())
+  quantity         Decimal  @db.Decimal(10, 2)
+  unitPrice        Decimal  @db.Decimal(15, 2)
+  totalPrice       Decimal  @db.Decimal(15, 2)
+  receivedQuantity Decimal? @db.Decimal(10, 2)
+
+  orderId String
+  order   InventoryOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  itemId  String
+  item    Item           @relation(fields: [itemId], references: [id])
+
+  @@index([orderId])
+  @@index([itemId])
 }
 
 // ============================================
@@ -890,9 +940,10 @@ model Client {
   companyId String
   company   Company @relation(fields: [companyId], references: [id])
 
-  invoices      Invoice[]
-  contracts     Contract[]
-  opportunities Opportunity[]
+  invoices        Invoice[]
+  contracts       Contract[]
+  opportunities   Opportunity[]
+  inventoryOrders InventoryOrder[]
 
   @@index([companyId])
   @@index([code])
@@ -968,8 +1019,9 @@ model Equipment {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  maintenance EquipmentMaintenance[]
-  assignments EquipmentAssignment[]
+  maintenance        EquipmentMaintenance[]
+  maintenanceRecords Maintenance[]          @relation("MaintenanceRecords")
+  assignments        EquipmentAssignment[]
 
   @@index([code])
   @@index([status])
@@ -995,6 +1047,39 @@ model EquipmentMaintenance {
   @@index([equipmentId])
   @@index([status])
   @@index([scheduledDate])
+}
+
+model Maintenance {
+  id              String    @id @default(cuid())
+  equipmentId     String
+  technicianId    String?
+  technicianName  String
+  technicianPhone String
+  maintenanceType String // preventive, corrective, inspection, emergency, overhaul
+  priority        String    @default("medium") // low, medium, high, urgent
+  status          String    @default("scheduled") // scheduled, in-progress, completed, overdue, pending
+  scheduledDate   DateTime
+  completedDate   DateTime?
+  estimatedCost   Decimal   @db.Decimal(15, 2)
+  actualCost      Decimal?  @db.Decimal(15, 2)
+  estimatedHours  Decimal?  @db.Decimal(8, 2)
+  actualHours     Decimal?  @db.Decimal(8, 2)
+  location        String
+  description     String
+  notes           String?
+  partsRequired   String[] // Array of required parts
+  checklist       Json[] // Array of checklist items with completion status
+  attachments     String[] // Array of file paths
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  equipment Equipment @relation("MaintenanceRecords", fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@index([equipmentId])
+  @@index([status])
+  @@index([priority])
+  @@index([scheduledDate])
+  @@index([maintenanceType])
 }
 
 model EquipmentAssignment {

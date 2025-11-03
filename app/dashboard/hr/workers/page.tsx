@@ -22,7 +22,8 @@ import {
   Building2,
   Award,
   Calendar,
-  DollarSign
+  DollarSign,
+  FileText
 } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { formatCurrency } from "@/lib/utils"
@@ -324,7 +325,7 @@ export default function WorkersPage() {
                 <div className="flex items-start gap-4">
                   <Avatar className="h-16 w-16">
                     <AvatarFallback className="bg-blue-100 text-blue-700 text-lg font-bold">
-                      {getInitials(worker.name.split(' ')[0], worker.name.split(' ')[1] || '')}
+                      {getInitials(worker.name?.split(' ')[0] || '', worker.name?.split(' ')[1] || '')}
                     </AvatarFallback>
                   </Avatar>
                   <div>

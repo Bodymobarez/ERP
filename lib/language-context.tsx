@@ -6,7 +6,7 @@ import { translations, Language } from './translations'
 interface LanguageContextType {
   lang: Language
   setLang: (lang: Language) => void
-  t: typeof translations.en
+  t: typeof translations.ar
   toggleLanguage: () => void
 }
 

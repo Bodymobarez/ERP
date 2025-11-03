@@ -6,14 +6,17 @@ import { generateCode } from '@/lib/utils'
 import { z } from 'zod'
 
 const itemSchema = z.object({
+  sku: z.string().min(1),
   name: z.string().min(1),
   description: z.string().optional(),
   category: z.string(),
   unit: z.string(),
-  unitPrice: z.number(),
-  costPrice: z.number(),
-  minStock: z.number().optional(),
-  maxStock: z.number().optional(),
+  unitPrice: z.number().positive(),
+  costPrice: z.number().positive(),
+  minStock: z.number().min(0).default(0),
+  maxStock: z.number().min(0).optional(),
+  currentStock: z.number().min(0).default(0),
+  image: z.string().optional(),
 })
 
 export async function GET(request: NextRequest) {
@@ -55,13 +58,17 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = itemSchema.parse(body)
 
-    const sku = generateCode('ITM')
+    // Check if SKU already exists
+    const existingItem = await prisma.item.findUnique({
+      where: { sku: validatedData.sku },
+    })
+
+    if (existingItem) {
+      return NextResponse.json({ error: 'رمز الصنف موجود مسبقاً' }, { status: 400 })
+    }
 
     const item = await prisma.item.create({
-      data: {
-        ...validatedData,
-        sku,
-      },
+      data: validatedData,
     })
 
     return NextResponse.json(item, { status: 201 })

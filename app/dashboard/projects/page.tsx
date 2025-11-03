@@ -360,16 +360,20 @@ export default function ProjectsPage() {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-2 pt-2">
-                    <Button variant="outline" size="sm" className="flex-1">
-                      <Eye className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">عرض</span>
-                      <span className="sm:hidden">عرض</span>
-                    </Button>
-                    <Button variant="outline" size="sm" className="flex-1">
-                      <Edit className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">تعديل</span>
-                      <span className="sm:hidden">تعديل</span>
-                    </Button>
+                    <Link href={`/dashboard/projects/${project.id}`}>
+                      <Button variant="outline" size="sm" className="flex-1 w-full">
+                        <Eye className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">عرض</span>
+                        <span className="sm:hidden">عرض</span>
+                      </Button>
+                    </Link>
+                    <Link href={`/dashboard/projects/${project.id}/edit`}>
+                      <Button variant="outline" size="sm" className="flex-1 w-full">
+                        <Edit className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">تعديل</span>
+                        <span className="sm:hidden">تعديل</span>
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </CardContent>
@@ -433,12 +437,16 @@ export default function ProjectsPage() {
                       <td className="p-2 sm:p-4 text-xs sm:text-sm hidden lg:table-cell">{new Date(project.endDate).toLocaleDateString('ar-SA')}</td>
                       <td className="p-2 sm:p-4">
                         <div className="flex gap-1 sm:gap-2">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
-                          </Button>
+                          <Link href={`/dashboard/projects/${project.id}`}>
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                              <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
+                            </Button>
+                          </Link>
+                          <Link href={`/dashboard/projects/${project.id}/edit`}>
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                              <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
+                            </Button>
+                          </Link>
                         </div>
                       </td>
                     </tr>
@@ -521,12 +529,16 @@ export default function ProjectsPage() {
                       </span>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
-                      </Button>
+                      <Link href={`/dashboard/projects/${project.id}`}>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
+                        </Button>
+                      </Link>
+                      <Link href={`/dashboard/projects/${project.id}/edit`}>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>

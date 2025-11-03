@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -192,6 +192,19 @@ export default function InventoryPage() {
   const { t, lang } = useLanguage()
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedStatus, setSelectedStatus] = useState("all")
+  const [showSuccess, setShowSuccess] = useState(false)
+
+  // Check for success message
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('success') === 'item-created') {
+      setShowSuccess(true)
+      // Remove the success parameter from URL
+      window.history.replaceState({}, '', window.location.pathname)
+      // Hide success message after 5 seconds
+      setTimeout(() => setShowSuccess(false), 5000)
+    }
+  }, [])
 
   const filteredInventory = mockInventory.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -232,6 +245,16 @@ export default function InventoryPage() {
 
   return (
     <div className="space-y-6">
+      {/* Success Message */}
+      {showSuccess && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="h-5 w-5 text-green-600" />
+            <p className="text-green-800 font-medium">تم إضافة الصنف بنجاح!</p>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>

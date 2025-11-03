@@ -159,6 +159,43 @@ async function main() {
   ])
   console.log('✅ Sample clients created')
 
+  // Create Sample Suppliers
+  const suppliers = await Promise.all([
+    prisma.supplier.create({
+      data: {
+        code: 'SUP-001',
+        name: 'شركة المعدات الإنشائية',
+        contactName: 'أحمد محمد',
+        email: 'info@construction-eq.com',
+        phone: '+966123456789',
+        address: 'شارع الملك فهد',
+        city: 'الرياض',
+        state: 'الرياض',
+        country: 'السعودية',
+        postalCode: '12345',
+        rating: 5,
+        companyId: company.id,
+      },
+    }),
+    prisma.supplier.create({
+      data: {
+        code: 'SUP-002',
+        name: 'مؤسسة الصيانة المتقدمة',
+        contactName: 'محمد علي',
+        email: 'contact@advanced-maintenance.com',
+        phone: '+966123456790',
+        address: 'طريق الملك عبدالعزيز',
+        city: 'جدة',
+        state: 'مكة المكرمة',
+        country: 'السعودية',
+        postalCode: '23456',
+        rating: 4,
+        companyId: company.id,
+      },
+    }),
+  ])
+  console.log('✅ Sample suppliers created')
+
   // Create Sample Projects
   const projects = await Promise.all([
     prisma.project.create({
@@ -328,6 +365,263 @@ async function main() {
     }),
   ])
   console.log('✅ Sample inventory items created')
+
+  // Create Sample Warehouses
+  const warehouses = await Promise.all([
+    prisma.warehouse.create({
+      data: {
+        code: 'WH-001',
+        name: 'المخزن الرئيسي',
+        type: 'main',
+        address: 'شارع الملك فهد، الرياض',
+        city: 'الرياض',
+        state: 'الرياض',
+        country: 'المملكة العربية السعودية',
+        capacity: 5000,
+        companyId: company.id,
+        branchId: branch.id,
+      },
+    }),
+    prisma.warehouse.create({
+      data: {
+        code: 'WH-002',
+        name: 'مخزن الفرع الشرقي',
+        type: 'branch',
+        address: 'طريق الخليج، الدمام',
+        city: 'الدمام',
+        state: 'المنطقة الشرقية',
+        country: 'المملكة العربية السعودية',
+        capacity: 2000,
+        companyId: company.id,
+      },
+    }),
+    prisma.warehouse.create({
+      data: {
+        code: 'WH-003',
+        name: 'مخزن الفرع الغربي',
+        type: 'branch',
+        address: 'شارع التحلية، جدة',
+        city: 'جدة',
+        state: 'مكة المكرمة',
+        country: 'المملكة العربية السعودية',
+        capacity: 3000,
+        companyId: company.id,
+      },
+    }),
+    prisma.warehouse.create({
+      data: {
+        code: 'WH-004',
+        name: 'مخزن العبور',
+        type: 'transit',
+        address: 'المنطقة الصناعية، الرياض',
+        city: 'الرياض',
+        state: 'الرياض',
+        country: 'المملكة العربية السعودية',
+        capacity: 1000,
+        companyId: company.id,
+      },
+    }),
+  ])
+  console.log('✅ Sample warehouses created')
+
+  // Get created items for warehouse assignment
+  const items = await prisma.item.findMany({
+    take: 2,
+  })
+
+  // Create Sample Warehouse Items
+  if (items.length >= 2) {
+    await Promise.all([
+      // Main warehouse items
+      prisma.warehouseItem.create({
+        data: {
+          warehouseId: warehouses[0].id,
+          itemId: items[0]!.id,
+          quantity: 30,
+          location: 'A-01-001',
+        },
+      }),
+      prisma.warehouseItem.create({
+        data: {
+          warehouseId: warehouses[0].id,
+          itemId: items[1]!.id,
+          quantity: 2,
+          location: 'B-01-001',
+        },
+      }),
+      // Branch warehouse items
+      prisma.warehouseItem.create({
+        data: {
+          warehouseId: warehouses[1].id,
+          itemId: items[0]!.id,
+          quantity: 15,
+          location: 'A-01-001',
+        },
+      }),
+    ])
+    console.log('✅ Sample warehouse items created')
+  }
+
+  // Create sample contracts
+  console.log('📄 Creating sample contracts...')
+  const contracts = await Promise.all([
+    prisma.contract.create({
+      data: {
+        number: 'CON-0001',
+        title: 'عقد توريد المعدات الإنشائية',
+        type: 'supply',
+        status: 'active',
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2024-12-31'),
+        value: 250000,
+        description: 'عقد توريد المعدات الإنشائية اللازمة للمشاريع',
+        supplierId: suppliers[0].id,
+        notes: 'يشمل الضمان لمدة سنة واحدة',
+        terms: {
+          create: [
+            {
+              title: 'التسليم',
+              description: 'يتم التسليم خلال 30 يوم من تاريخ الطلب',
+              order: 1
+            },
+            {
+              title: 'الضمان',
+              description: 'ضمان شامل لمدة سنة واحدة من تاريخ التسليم',
+              order: 2
+            },
+            {
+              title: 'الدفع',
+              description: 'الدفع خلال 30 يوم من تاريخ الفاتورة',
+              order: 3
+            }
+          ]
+        }
+      }
+    }),
+    prisma.contract.create({
+      data: {
+        number: 'CON-0002',
+        title: 'عقد خدمات الصيانة الدورية',
+        type: 'maintenance',
+        status: 'active',
+        startDate: new Date('2024-02-01'),
+        endDate: new Date('2025-01-31'),
+        value: 120000,
+        description: 'عقد صيانة دورية للمعدات والآلات',
+        supplierId: suppliers[1].id,
+        notes: 'يشمل الصيانة الطارئة 24/7',
+        terms: {
+          create: [
+            {
+              title: 'جدولة الصيانة',
+              description: 'صيانة دورية كل شهر وفقاً للجدول المحدد',
+              order: 1
+            },
+            {
+              title: 'الاستجابة السريعة',
+              description: 'استجابة خلال 4 ساعات للطوارئ',
+              order: 2
+            }
+          ]
+        }
+      }
+    }),
+    prisma.contract.create({
+      data: {
+        number: 'CON-0003',
+        title: 'عقد مشروع إنشاء مجمع سكني',
+        type: 'service',
+        status: 'active',
+        startDate: new Date('2024-03-01'),
+        endDate: new Date('2025-03-01'),
+        value: 2500000,
+        description: 'عقد إنشاء مجمع سكني يحتوي على 50 وحدة سكنية',
+        clientId: clients[0].id,
+        notes: 'يشمل أعمال التشطيب والبنية التحتية',
+        terms: {
+          create: [
+            {
+              title: 'مراحل التنفيذ',
+              description: 'تنفيذ المشروع على 4 مراحل وفقاً للمخططات المعتمدة',
+              order: 1
+            },
+            {
+              title: 'معايير الجودة',
+              description: 'الالتزام بمعايير الجودة والمواصفات المعتمدة',
+              order: 2
+            },
+            {
+              title: 'التسليم النهائي',
+              description: 'التسليم النهائي خلال 12 شهر من تاريخ بدء العمل',
+              order: 3
+            }
+          ]
+        },
+        amendments: {
+          create: [
+            {
+              number: 'AMD-001',
+              date: new Date('2024-06-01'),
+              description: 'تعديل في مواصفات التشطيب الداخلي',
+              status: 'approved',
+              reason: 'طلب من العميل لتحسين المواصفات'
+            }
+          ]
+        }
+      }
+    }),
+    prisma.contract.create({
+      data: {
+        number: 'CON-0004',
+        title: 'عقد توظيف مهندسين مدنيين',
+        type: 'employment',
+        status: 'active',
+        startDate: new Date('2024-01-15'),
+        endDate: new Date('2025-01-15'),
+        value: 480000,
+        description: 'عقد توظيف 4 مهندسين مدنيين للعمل في المشاريع',
+        notes: 'يشمل التأمين الصحي والمكافآت',
+        terms: {
+          create: [
+            {
+              title: 'ساعات العمل',
+              description: '8 ساعات عمل يومياً، 5 أيام في الأسبوع',
+              order: 1
+            },
+            {
+              title: 'الراتب والمكافآت',
+              description: 'راتب شهري 10,000 مع مكافأة سنوية',
+              order: 2
+            }
+          ]
+        }
+      }
+    }),
+    prisma.contract.create({
+      data: {
+        number: 'CON-0005',
+        title: 'عقد توريد الخرسانة الجاهزة',
+        type: 'supply',
+        status: 'expired',
+        startDate: new Date('2023-06-01'),
+        endDate: new Date('2024-05-31'),
+        value: 180000,
+        description: 'عقد توريد الخرسانة الجاهزة للمشاريع الإنشائية',
+        supplierId: suppliers[0].id,
+        notes: 'عقد منتهي، يحتاج تجديد',
+        terms: {
+          create: [
+            {
+              title: 'المواصفات الفنية',
+              description: 'خرسانة بمقاومة ضغط 300 كيلو/سم²',
+              order: 1
+            }
+          ]
+        }
+      }
+    })
+  ])
+  console.log('✅ Sample contracts created')
 
   console.log('🎉 Database seeding completed successfully!')
 }

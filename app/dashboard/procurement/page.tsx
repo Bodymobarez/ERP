@@ -189,6 +189,9 @@ export default function ProcurementPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedStatus, setSelectedStatus] = useState("all")
   const [selectedCategory, setSelectedCategory] = useState("all")
+  const [selectedOrder, setSelectedOrder] = useState<any>(null)
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const [showTrackingModal, setShowTrackingModal] = useState(false)
 
   const filteredOrders = mockPurchaseOrders.filter(order => {
     const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -256,6 +259,36 @@ export default function ProcurementPage() {
       case "low": return "منخفض"
       default: return priority
     }
+  }
+
+  const handleViewDetails = (order: any) => {
+    setSelectedOrder(order)
+    setShowDetailsModal(true)
+  }
+
+  const handleApproveOrder = (orderId: string) => {
+    // في التطبيق الحقيقي سيكون هناك API call
+    const orderIndex = mockPurchaseOrders.findIndex(o => o.id === orderId)
+    if (orderIndex !== -1) {
+      (mockPurchaseOrders[orderIndex] as any).status = 'approved'
+      alert('تم اعتماد الطلب بنجاح!')
+    }
+  }
+
+  const handleRejectOrder = (orderId: string) => {
+    const reason = prompt('يرجى إدخال سبب الرفض:')
+    if (reason) {
+      const orderIndex = mockPurchaseOrders.findIndex(o => o.id === orderId)
+      if (orderIndex !== -1) {
+        (mockPurchaseOrders[orderIndex] as any).status = 'rejected'
+        alert('تم رفض الطلب!')
+      }
+    }
+  }
+
+  const handleTrackDelivery = (order: any) => {
+    setSelectedOrder(order)
+    setShowTrackingModal(true)
   }
 
   return (
@@ -587,24 +620,42 @@ export default function ProcurementPage() {
               )}
 
               <div className="flex gap-2 pt-4 border-t">
-                <Button variant="outline" size="sm" className="flex-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="flex-1"
+                  onClick={() => handleViewDetails(order)}
+                >
                   <Eye className="h-4 w-4 mr-2" />
                   عرض التفاصيل
                 </Button>
                 {order.status === 'pending' && (
                   <>
-                    <Button size="sm" className="flex-1 bg-green-600 hover:bg-green-700">
+                    <Button 
+                      size="sm" 
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                      onClick={() => handleApproveOrder(order.id)}
+                    >
                       <CheckCircle2 className="h-4 w-4 mr-2" />
                       اعتماد
                     </Button>
-                    <Button variant="destructive" size="sm" className="flex-1">
+                    <Button 
+                      variant="destructive" 
+                      size="sm" 
+                      className="flex-1"
+                      onClick={() => handleRejectOrder(order.id)}
+                    >
                       <XCircle className="h-4 w-4 mr-2" />
                       رفض
                     </Button>
                   </>
                 )}
                 {order.status === 'approved' && (
-                  <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700">
+                  <Button 
+                    size="sm" 
+                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                    onClick={() => handleTrackDelivery(order)}
+                  >
                     <Truck className="h-4 w-4 mr-2" />
                     تتبع التوصيل
                   </Button>
@@ -702,6 +753,217 @@ export default function ProcurementPage() {
           </Card>
         </Link>
       </div>
+
+      {/* Details Modal */}
+      {showDetailsModal && selectedOrder && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">تفاصيل طلب الشراء</h2>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setShowDetailsModal(false)}
+                >
+                  ✕
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <h3 className="font-semibold mb-3">معلومات الطلب</h3>
+                  <div className="space-y-2 text-sm">
+                    <div><span className="font-medium">رقم الطلب:</span> {selectedOrder.id}</div>
+                    <div><span className="font-medium">التاريخ:</span> {new Date(selectedOrder.date).toLocaleDateString('ar-SA')}</div>
+                    <div><span className="font-medium">المورد:</span> {selectedOrder.supplier}</div>
+                    <div><span className="font-medium">المشروع:</span> {selectedOrder.project}</div>
+                    <div><span className="font-medium">الفئة:</span> {selectedOrder.category}</div>
+                    <div><span className="font-medium">الحالة:</span> 
+                      <Badge className={`mr-2 ${getStatusColor(selectedOrder.status)}`}>
+                        {getStatusLabel(selectedOrder.status)}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold mb-3">تفاصيل التسليم</h3>
+                  <div className="space-y-2 text-sm">
+                    <div><span className="font-medium">تاريخ التسليم:</span> {new Date(selectedOrder.deliveryDate).toLocaleDateString('ar-SA')}</div>
+                    <div><span className="font-medium">مكان التسليم:</span> {selectedOrder.deliveryLocation}</div>
+                    <div><span className="font-medium">الأولوية:</span> 
+                      <Badge className={`mr-2 ${getPriorityColor(selectedOrder.priority)}`}>
+                        {getPriorityLabel(selectedOrder.priority)}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-semibold mb-3">الأصناف</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse border border-gray-300">
+                    <thead>
+                      <tr className="bg-gray-50">
+                        <th className="border border-gray-300 p-2 text-right">الصنف</th>
+                        <th className="border border-gray-300 p-2 text-center">الكمية</th>
+                        <th className="border border-gray-300 p-2 text-center">الوحدة</th>
+                        <th className="border border-gray-300 p-2 text-center">السعر</th>
+                        <th className="border border-gray-300 p-2 text-center">الإجمالي</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedOrder.items.map((item: any, index: number) => (
+                        <tr key={index}>
+                          <td className="border border-gray-300 p-2">{item.name}</td>
+                          <td className="border border-gray-300 p-2 text-center">{item.quantity}</td>
+                          <td className="border border-gray-300 p-2 text-center">{item.unit}</td>
+                          <td className="border border-gray-300 p-2 text-center">{formatCurrency(item.unitPrice)}</td>
+                          <td className="border border-gray-300 p-2 text-center">{formatCurrency(item.total)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <h3 className="font-semibold mb-3">الملخص المالي</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>المجموع الفرعي:</span>
+                      <span>{formatCurrency(selectedOrder.subtotal)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>الضريبة ({selectedOrder.tax}%):</span>
+                      <span>{formatCurrency(selectedOrder.taxAmount)}</span>
+                    </div>
+                    <div className="flex justify-between font-bold border-t pt-2">
+                      <span>الإجمالي:</span>
+                      <span>{formatCurrency(selectedOrder.total)}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {selectedOrder.notes && (
+                  <div>
+                    <h3 className="font-semibold mb-3">ملاحظات</h3>
+                    <p className="text-sm bg-gray-50 p-3 rounded">{selectedOrder.notes}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-3">
+                <Button onClick={() => setShowDetailsModal(false)}>
+                  إغلاق
+                </Button>
+                {selectedOrder.status === 'pending' && (
+                  <>
+                    <Button 
+                      className="bg-green-600 hover:bg-green-700"
+                      onClick={() => {
+                        handleApproveOrder(selectedOrder.id)
+                        setShowDetailsModal(false)
+                      }}
+                    >
+                      اعتماد
+                    </Button>
+                    <Button 
+                      variant="destructive"
+                      onClick={() => {
+                        handleRejectOrder(selectedOrder.id)
+                        setShowDetailsModal(false)
+                      }}
+                    >
+                      رفض
+                    </Button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tracking Modal */}
+      {showTrackingModal && selectedOrder && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">تتبع التوصيل</h2>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setShowTrackingModal(false)}
+                >
+                  ✕
+                </Button>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-semibold mb-3">معلومات الطلب</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div><span className="font-medium">رقم الطلب:</span> {selectedOrder.id}</div>
+                  <div><span className="font-medium">المورد:</span> {selectedOrder.supplier}</div>
+                  <div><span className="font-medium">تاريخ التسليم المتوقع:</span> {new Date(selectedOrder.deliveryDate).toLocaleDateString('ar-SA')}</div>
+                  <div><span className="font-medium">مكان التسليم:</span> {selectedOrder.deliveryLocation}</div>
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-semibold mb-3">حالة التوصيل</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                    <div>
+                      <p className="font-medium">تم اعتماد الطلب</p>
+                      <p className="text-sm text-gray-600">تم اعتماد الطلب وإرساله للمورد</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+                    <div>
+                      <p className="font-medium">قيد التحضير</p>
+                      <p className="text-sm text-gray-600">المورد يقوم بتحضير الطلب</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+                    <div>
+                      <p className="font-medium text-gray-500">في الطريق</p>
+                      <p className="text-sm text-gray-500">سيتم الشحن قريباً</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+                    <div>
+                      <p className="font-medium text-gray-500">تم التسليم</p>
+                      <p className="text-sm text-gray-500">في انتظار التسليم</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-semibold mb-3">معلومات الاتصال</h3>
+                <div className="bg-gray-50 p-4 rounded">
+                  <p><span className="font-medium">المورد:</span> {selectedOrder.supplier}</p>
+                  <p><span className="font-medium">الهاتف:</span> +966 50 123 4567</p>
+                  <p><span className="font-medium">البريد الإلكتروني:</span> supplier@example.com</p>
+                </div>
+              </div>
+
+              <Button onClick={() => setShowTrackingModal(false)}>
+                إغلاق
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
